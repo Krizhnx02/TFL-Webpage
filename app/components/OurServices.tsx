@@ -10,14 +10,6 @@ interface Service {
 
 const services: Service[] = [
   {
-    title: "Zero to One",
-    description: "From Idea to Day One. We help founders move from concept to company. Our Zero-to-One program assesses your business model, identifies the right UAE jurisdiction, and builds the operational foundation for launch."
-  },
-  {
-    title: "M&A Advisory",
-    description: "Buy, Sell, or Merge — with Clarity and Control. Whether you're a large corporate, private equity fund, or family office seeking a buy-side scout and M&A advisor — or a founder preparing for your first exit — we guide you through every stage of the transaction. From deal sourcing and data room preparation to valuation, negotiation, and closing, we ensure precision, discretion, and alignment with your strategic objectives."
-  },
-  {
     title: "Legal Advisory",
     description: "Legal Precision for Complex Transactions. Our legal practice spans corporate, commercial, and transactional mandates. We support founders, investors, and corporates through:",
     bullets: [
@@ -28,6 +20,14 @@ const services: Service[] = [
       "AML, GRC, Risk Compliance",
       "Employment Relations and Dispute Resolution/Mediation"
     ]
+  },
+  {
+    title: "M&A Advisory",
+    description: "Buy, Sell, or Merge — with Clarity and Control. Whether you're a large corporate, private equity fund, or family office seeking a buy-side scout and M&A advisor — or a founder preparing for your first exit — we guide you through every stage of the transaction. From deal sourcing and data room preparation to valuation, negotiation, and closing, we ensure precision, discretion, and alignment with your strategic objectives."
+  },
+  {
+    title: "Zero to One",
+    description: "From Idea to Day One. We help founders move from concept to company. Our Zero-to-One program assesses your business model, identifies the right UAE jurisdiction, and builds the operational foundation for launch."
   },
   {
     title: "Fundraising Advisory",
