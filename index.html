@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Founders Lab — Capital. Legal. Strategy.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1c24;
+  --ink-soft: #3d3f4e;
+  --ink-muted: #8a8d9f;
+  --cream: #f5f4f0;
+  --cream-dark: #ede9e2;
+  --accent: #2b3a6b;
+  --accent-light: #e8ecf5;
+  --gold: #c9a84c;
+  --gold-light: #f5edd8;
+  --white: #ffffff;
+  --border: rgba(26,28,36,0.1);
+  --border-strong: rgba(26,28,36,0.2);
+  --legal: #4a0c23;
+  --capital: #004040;
+  --strategy: #0D2257;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+/* Custom cursor */
+#cursor { position: fixed; width: 10px; height: 10px; background: var(--ink); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s var(--ease), height .2s var(--ease), background .3s; }
+#cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--ink); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: transform .12s var(--ease), width .25s var(--ease), height .25s var(--ease), border-color .3s; opacity: 0.5; }
+body.hovering #cursor { width: 6px; height: 6px; background: var(--gold); }
+body.hovering #cursor-ring { width: 52px; height: 52px; border-color: var(--gold); opacity: 0.8; }
+body.cursor-on-dark #cursor { background: var(--gold); }
+body.cursor-on-dark #cursor-ring { border-color: var(--gold); }
+body.hovering.cursor-on-dark #cursor { background: var(--gold); }
+body.hovering.cursor-on-dark #cursor-ring { border-color: var(--gold); opacity: 0.8; }
+
+/* Pages */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; animation: pageFadeIn .5s var(--ease); }
+@keyframes pageFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: rgba(245,244,240,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: background .3s; }
+.nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 0.02em; color: var(--ink); cursor: pointer; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-link { font-size: 13px; font-weight: 400; letter-spacing: 0.06em; color: var(--ink-soft); cursor: pointer; padding: 8px 16px; border-radius: 40px; transition: all .2s; text-transform: uppercase; border: 1px solid transparent; }
+.nav-link:hover { color: var(--ink); border-color: var(--border); }
+.nav-link.active { color: var(--ink); background: var(--white); border-color: var(--border); }
+.nav-link.cta { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.nav-link.cta:hover { background: var(--accent); border-color: var(--accent); }
+
+/* Sections */
+section { padding: 120px 48px; }
+.section-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.section-label::before { content: ''; width: 28px; height: 1px; background: var(--ink-muted); display: block; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
+
+/* HERO */
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px 48px 100px; position: relative; overflow: hidden; background: var(--ink); align-items: flex-start; margin-left: -35px; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(43,58,107,0.4) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.15) 0%, transparent 50%); }
+.hero-circle { width: 280px; height: 280px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); position: absolute; animation: circleFloat 8s ease-in-out infinite; }
+.hero-circle:nth-child(1) { right: 0; top: -80px; width: 340px; height: 340px; animation-delay: 0s; }
+.hero-circle:nth-child(2) { right: 120px; top: 60px; animation-delay: -2.5s; }
+.hero-circle:nth-child(3) { right: 240px; top: 40px; animation-delay: -5s; }
+@keyframes circleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+.hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; position: relative; display: flex; align-items: center; gap: 12px; }
+.hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); display: block; }
+.hero-title { font-family: var(--font-display); font-size: clamp(56px, 8vw, 110px); font-weight: 300; line-height: 0.95; color: var(--white); position: relative; margin-bottom: 48px; letter-spacing: -0.01em; }
+.hero-title em { font-style: italic; color: rgba(255,255,255,0.5); }
+.hero-sub { font-size: 15px; color: rgba(gold); max-width: 480px; line-height: 1.7; position: relative; margin-bottom: 56px; }
+.hero-actions { display: flex; gap: 16px; position: relative; }
+
+/* Buttons */
+.btn { font-family: var(--font-body); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; cursor: pointer; border: none; padding: 16px 32px; border-radius: 40px; transition: all .3s var(--ease); display: inline-flex; align-items: center; gap: 10px; }
+.btn-primary { background: var(--white); color: var(--ink); }
+.btn-primary:hover { background: var(--gold); color: var(--ink); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.btn-dark { background: var(--ink); color: var(--white); }
+.btn-dark:hover { background: var(--accent); transform: translateY(-2px); }
+
+/* Pillars */
+.pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); margin: 0; }
+.pillar-card { background: var(--cream); padding: 56px 40px; cursor: pointer; transition: all .4s var(--ease); position: relative; overflow: hidden; }
+.pillar-card::before { content: ''; position: absolute; inset: 0; background: var(--pillar-color, var(--accent)); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease); z-index: 0; }
+.pillar-card:hover::before { transform: scaleY(1); }
+.pillar-card > * { position: relative; z-index: 1; transition: color .3s; }
+.pillar-card:hover .pillar-num, .pillar-card:hover .pillar-name, .pillar-card:hover p, .pillar-card:hover .pillar-link { color: var(--white); }
+.pillar-num { font-family: var(--font-display); font-size: 72px; font-weight: 300; color: var(--cream-dark); line-height: 1; margin-bottom: 32px; transition: color .3s; }
+.pillar-name { font-family: var(--font-display); font-size: 36px; font-weight: 400; margin-bottom: 16px; color: var(--ink); }
+.pillar-card p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 32px; }
+.pillar-link { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); display: flex; align-items: center; gap: 8px; }
+.pillar-link::after { content: '→'; transition: transform .2s; }
+.pillar-card:hover .pillar-link::after { transform: translateX(6px); }
+
+/* About */
+.about-strip { background: var(--white); }
+.about-inner { max-width: 900px; }
+.about-inner h2 { font-size: clamp(36px, 4vw, 58px); line-height: 1.15; margin-bottom: 40px; color: var(--ink); }
+.about-inner h2 em { font-style: italic; color: var(--ink-muted); }
+.about-inner p { font-size: 16px; line-height: 1.8; color: var(--ink-soft); max-width: 640px; margin-bottom: 24px; }
+
+/* Stats */
+.stats-bar { display: grid; grid-template-columns: repeat(5,1fr); background: var(--ink); padding: 64px 48px; gap: 2px; }
+.stat-item { padding: 0 32px; border-right: 1px solid rgba(255,255,255,0.1); }
+.stat-item:first-child { padding-left: 0; }
+.stat-item:last-child { border: none; }
+.stat-num { font-family: Georgia, 'Times New Roman', serif; font-size: 52px; font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 8px; }
+.stat-num span { color: var(--gold); font-size: 0.75em; }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+/* Models */
+.models-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; }
+.model-card { border: 1px solid var(--border); border-radius: 12px; padding: 40px; transition: all .3s var(--ease); background: var(--cream); position: relative; overflow: hidden; }
+.model-card:hover { border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(26,28,36,0.08); }
+.model-icon { font-family: var(--font-display); font-size: 48px; color: var(--ink-muted); margin-bottom: 24px; line-height: 1; }
+.model-card h3 { font-family: var(--font-display); font-size: 28px; margin-bottom: 12px; }
+.model-card p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 24px; }
+.model-price { font-family: var(--font-display); font-size: 20px; color: var(--gold); }
+
+/* Service hero */
+.service-hero { min-height: 60vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+.service-hero.legal { background: var(--legal); }
+.service-hero.capital { background: var(--capital); }
+.service-hero.strategy { background: var(--strategy); }
+.service-hero-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.service-hero-label::before { content: ''; width: 40px; height: 1px; background: rgba(255,255,255,0.3); }
+.service-hero h1 { font-size: clamp(48px, 7vw, 96px); color: var(--white); font-weight: 300; margin-bottom: 24px; }
+.service-hero p { font-size: 16px; color: rgba(255,255,255,0.6); max-width: 560px; line-height: 1.7; }
+.sh-circle { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.07); }
+
+/* Services */
+.services-content { background: var(--white); padding: 80px 48px; }
+.services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-top: 64px; }
+.service-item { background: var(--white); padding: 48px 40px; position: relative; overflow: hidden; }
+.service-item::after { content: ''; position: absolute; bottom: 0; left: 40px; right: 40px; height: 1px; background: var(--border); }
+.service-item h3 { font-size: 26px; margin-bottom: 16px; color: var(--ink); }
+.service-item p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 24px; }
+.service-tag { display: inline-block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--ink-muted); margin-bottom: 4px; }
+.service-bullets { list-style: none; margin-top: 20px; }
+.service-bullets li { font-size: 14px; color: var(--ink-soft); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.service-bullets li::before { content: '—'; color: var(--ink-muted); flex-shrink: 0; }
+
+/* CTA / Contact */
+.cta-section { background: var(--ink); padding: 120px 48px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.cta-section h2 { font-size: clamp(40px,5vw,72px); color: var(--white); line-height: 1.1; }
+.cta-section h2 em { color: rgba(255,255,255,0.35); }
+.cta-right p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.8; margin-bottom: 40px; }
+.cta-form { display: flex; flex-direction: column; gap: 16px; }
+.cta-form input, .cta-form select, .cta-form textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-family: var(--font-body); font-size: 14px; padding: 16px 20px; border-radius: 8px; outline: none; transition: border-color .2s; }
+.cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(255,255,255,0.25); }
+.cta-form input:focus, .cta-form select:focus, .cta-form textarea:focus { border-color: rgba(255,255,255,0.3); }
+.cta-form select option { background: var(--ink); }
+.cta-form textarea { resize: none; height: 100px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Testimonials */
+.testimonials-section { background: var(--cream); padding: 100px 48px; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+.testimonial-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; gap: 24px; transition: box-shadow .3s var(--ease); }
+.testimonial-card:hover { box-shadow: 0 16px 48px rgba(26,28,36,0.07); }
+.testimonial-card.empty { border: 1px dashed var(--border-strong); background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 260px; gap: 12px; }
+.testimonial-quote-mark { font-family: var(--font-display); font-size: 72px; color: var(--accent-light); line-height: 0.8; }
+.testimonial-text { font-family: var(--font-display); font-size: 18px; line-height: 1.6; color: var(--ink); font-style: italic; flex: 1; }
+.testimonial-text.placeholder { font-family: var(--font-body); font-size: 13px; color: var(--ink-muted); font-style: normal; line-height: 1.6; }
+.testimonial-author { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid var(--border); }
+.testimonial-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.testimonial-role { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.04em; }
+.testimonial-tag-badge { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; background: var(--accent-light); color: var(--legal); width: fit-content; }
+.empty-icon { font-size: 28px; color: var(--border-strong); }
+.empty-label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+
+/* Blog */
+.blog-hero { background: var(--ink); padding: 160px 48px 80px; }
+.blog-hero h1 { font-size: clamp(48px,6vw,80px); color: var(--white); font-weight: 300; }
+.blog-hero p { font-size: 16px; color: rgba(255,255,255,0.4); margin-top: 20px; max-width: 500px; line-height: 1.7; }
+.blog-filters { padding: 32px 48px; background: var(--white); display: flex; gap: 8px; border-bottom: 1px solid var(--border); position: sticky; top: 72px; z-index: 100; flex-wrap: wrap; }
+.filter-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 20px; border-radius: 40px; border: 1px solid var(--border); background: transparent; color: var(--ink-soft); cursor: pointer; transition: all .2s; }
+.filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+.filter-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.filter-btn.legal-filter.active { background: var(--legal); border-color: var(--legal); }
+.filter-btn.capital-filter.active { background: var(--capital); border-color: var(--capital); }
+.filter-btn.strategy-filter.active { background: var(--strategy); border-color: var(--strategy); }
+.blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); padding: 2px; }
+.blog-card { background: var(--cream); padding: 40px; cursor: pointer; transition: background .3s var(--ease); display: flex; flex-direction: column; }
+.blog-card:hover { background: var(--white); }
+.blog-card-tag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 24px; font-weight: 500; width: fit-content; }
+.tag-legal { background: rgba(74,12,35,0.3); color: var(--legal); }
+.tag-capital { background: rgba(0,64,64,0.3); color: var(--capital); }
+.tag-strategy { background: rgba(13,34,87,0.3); color: var(--strategy); }
+.tag-tier-blue { background: rgba(13,34,87,0.04); color: var(--strategy); border-left: 1.5px solid var(--strategy); }
+.tag-tier-green { background: rgba(0,64,64,0.04); color: var(--capital); border-left: 1.5px solid var(--capital); }
+.tag-tier-red { background: rgba(74,12,35,0.04); color: var(--legal); border-left: 1.5px solid var(--legal); }
+.btn-dark.btn-scoping { background: linear-gradient(to right, var(--legal) 50%, var(--ink) 50%); background-size: 200% 100%; background-position: right center; transition: background-position 0.5s var(--ease), transform .3s var(--ease); }
+.btn-dark.btn-scoping:hover { background-position: left center; transform: translateY(-2px); }
+.btn-dark.btn-capital-slide { background: linear-gradient(to right, var(--capital) 50%, var(--ink) 50%); background-size: 200% 100%; background-position: right center; transition: background-position 0.5s var(--ease), transform .3s var(--ease); color: var(--white); }
+.btn-dark.btn-capital-slide:hover { background-position: left center; transform: translateY(-2px); }
+/* Capital money animation canvas */
+#capitalCanvas { display: block; cursor: pointer; }
+.capital-symbol { transition: transform 0.3s; }
+@keyframes capitalPulse { 0%,100%{transform:scale(1);opacity:.7} 50%{transform:scale(1.12);opacity:1} }
+.blog-card h3 { font-family: var(--font-display); font-size: 22px; line-height: 1.25; color: var(--ink); margin-bottom: 16px; flex: 1; }
+.blog-card p { font-size: 13px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 32px; }
+.blog-card-meta { display: flex; justify-content: space-between; align-items: center; }
+.blog-date { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.05em; }
+.blog-read { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+.blog-card:hover .blog-read { gap: 10px; }
+
+/* Footer */
+footer { background: var(--ink); padding: 64px 48px 40px; }
+.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; }
+.footer-brand { font-family: var(--font-display); font-size: 32px; color: var(--white); font-weight: 400; margin-bottom: 16px; }
+.footer-brand span { color: var(--gold); }
+.footer-tagline { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 240px; }
+.footer-col h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 12px; cursor: pointer; transition: color .2s; text-decoration: none; }
+.footer-col a:hover { color: var(--white); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.25); }
+.footer-contact { font-size: 13px; color: rgba(255,255,255,0.4); }
+.footer-contact a { color: rgba(255,255,255,0.55); text-decoration: none; }
+.footer-contact a:hover { color: var(--white); }
+.footer-policy-link {
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+}
+.footer-policy-link:hover {
+  color: var(--gold) !important;
+  border-bottom-color: var(--gold);
+  text-shadow: 0 0 10px rgba(201,168,76,0.55), 0 0 20px rgba(201,168,76,0.25);
+}
+
+/* WhatsApp floating button */
+#waFloat {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9990;
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0.4s;
+}
+#waFloat.wa-visible {
+  opacity: 1;
+  visibility: visible;
+  animation: waBreathe 2.6s ease-in-out infinite;
+}
+#waFloat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25D366;
+  z-index: -1;
+  animation: waRipple 2.6s ease-out infinite;
+}
+#waFloat:hover { background: #1ebe5d; }
+@keyframes waBreathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+@keyframes waRipple {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* Network ticker */
+.network-strip { background: var(--cream-dark); padding: 28px 48px; overflow: hidden; }
+.network-inner { display: flex; gap: 0; align-items: center; animation: ticker 22s linear infinite; white-space: nowrap; width: max-content; }
+.network-item { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 0 24px; }
+.network-sep { color: var(--gold); font-size: 10px; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+
+/* ══════════════════ HOME ══════════════════ */
+.hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 120px 6vw 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+  }
+  #networkCanvas {
+    width: 100%;
+    height: 520px;
+    display: block;
+    border-radius: 4px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(91,124,255,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 80% at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-circles {
+    position: absolute; right: -80px; bottom: -80px;
+    width: 600px; height: 600px;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .hero-circles circle { fill: none; stroke: white; stroke-width: 1; }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: gray;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--text-muted);
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 8vw, 110px);
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .hero-title em { font-style: italic; color: var(--mist); }
+  .hero-subtitle {
+    font-size: clamp(15px, 1.8vw, 19px);
+    color: var(--text-dim);
+    color: gray;
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+    font-weight: 300;
+  }
+  /* Container for the logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  margin-left: -24px;
+}
+
+/* The actual logo image */
+.nav-logo img {
+  height: 42px; /* Adjust this value to make it smaller or larger */
+  width: auto;  /* Maintains aspect ratio */
+  display: block;
+}
+  .hero-actions { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 15px 32px;
+    background: var(--white); color: var(--navy-deep);
+    border: none; border-radius: 1px;
+    text-decoration: none; cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+  }
+  .btn-primary:hover { background: var(--mist); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 15px 32px;
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 1px;
+    text-decoration: none; cursor: pointer;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.6); transform: translateY(-1px); }
+
+
+/* Mobile menu */
+.menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+.menu-toggle span { width: 24px; height: 1.5px; background: var(--ink); display: block; transition: all .3s; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; flex-direction: column; position: fixed; inset: 0; background: var(--cream); justify-content: center; align-items: center; gap: 16px; z-index: 400; }
+  .nav-links.open { display: flex; }
+  .menu-toggle { display: flex; z-index: 501; }
+  section { padding: 80px 24px; }
+  .hero { padding: 120px 24px 64px; grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 24px; }
+  .stat-item { border: none; padding: 0; }
+  .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-filters { padding: 20px 24px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .models-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .services-content { padding: 48px 24px; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+  .network-strip { padding: 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png"></div>
+  <div class="nav-links" id="navLinks">
+    <span class="nav-link active" data-page="home" onclick="showPage('home')">Home</span>
+    <span class="nav-link" data-page="legal" onclick="showPage('legal')">Legal</span>
+    <span class="nav-link" data-page="capital" onclick="showPage('capital')">Capital</span>
+    <span class="nav-link" data-page="strategy" onclick="showPage('strategy')">Strategy</span>
+    <span class="nav-link" data-page="blog" onclick="showPage('blog')">Insights</span>
+    <span class="nav-link cta" onclick="scrollToContact()">Work With Us</span>
+  </div>
+  <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HOME
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow fade-in">The Founders Lab by Vriddhi Ventures</div>
+      <h1 class="hero-title fade-in" style="transition-delay:0.1s">
+        Where Founders<br><em>Build, Raise</em><br>and Exit.
+      </h1>
+      <p class="hero-subtitle fade-in" style="transition-delay:0.2s">
+        A multidisciplinary advisory firm at the intersection of capital, law, and strategy — built for audacious founders and investors.
+      </p>
+      <div class="hero-actions fade-in" style="transition-delay:0.3s">
+        <a class="btn-primary" href="#" onclick="showPage('contact');return false">Start a Conversation →</a>
+        <a class="btn-ghost" href="#" onclick="document.getElementById('home-verticals').scrollIntoView({behavior:'smooth'});return false">Explore Services</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <canvas id="networkCanvas"></canvas>
+    </div>
+  </section>
+  <!-- <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-tag">The Founders Lab by Vriddhi Ventures</div>
+    <h1 class="hero-title">Capital.<br>Legal.<br><em>Strategy.</em></h1>
+    <p class="hero-sub">A multidisciplinary advisory firm built for founders who move fast, build boldly, and need a partner who keeps pace.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="scrollToContact()">Start a Conversation</button>
+      <button class="btn btn-outline" onclick="showPage('legal')">Our Services →</button>
+    </div>
+  </div> -->
+
+  <div class="network-strip">
+    <div class="network-inner">
+      <span class="network-item">Healthcare and Life Sciences</span><span class="network-sep">◆</span>
+      <span class="network-item">Consumer goods and Retail</span><span class="network-sep">◆</span>
+      <span class="network-item">Finanacial Services</span><span class="network-sep">◆</span>
+      <span class="network-item">Industrials and Manufacturing</span><span class="network-sep">◆</span>
+      <span class="network-item">Telecommunications & Media & Tecnology</span><span class="network-sep">◆</span>
+      <span class="network-item">Education</span><span class="network-sep">◆</span>
+      <span class="network-item">Technology</span><span class="network-sep">◆</span>
+      <span class="network-item">Transportation and Logistics</span><span class="network-sep">◆</span>
+      <span class="network-item">Defense and Aviation</span><span class="network-sep">◆</span>
+      <span class="network-item"></span><span class="network-sep">◆</span>
+      <span class="network-item">Realestate</span><span class="network-sep">◆</span>
+      <span class="network-item">Renewable Energy and Data Centers</span><span class="network-sep">◆</span>
+    
+    </div>
+  </div>
+
+  <div class="pillars-grid">
+    <div class="pillar-card reveal" style="--pillar-color: var(--legal);" onclick="showPage('legal')">
+      <div class="pillar-num">01</div>
+      <div class="pillar-name">Legal</div>
+      <p>Zero-to-one legal frameworks, corporate structuring, shareholder agreements, IP, compliance, and due diligence — built to survive scrutiny.</p>
+      <div class="pillar-link">TFL Legal</div>
+    </div>
+    <div class="pillar-card reveal reveal-delay-1" style="--pillar-color: var(--capital);" onclick="showPage('capital')">
+      <div class="pillar-num">02</div>
+      <div class="pillar-name">Capital</div>
+      <p>Equity, debt, hybrid. We position your story, prepare your financials, and guide you from seed to institutional capital — and through every M&A transaction.</p>
+      <div class="pillar-link">TFL Capital</div>
+    </div>
+    <div class="pillar-card reveal reveal-delay-2" style="--pillar-color: var(--strategy);" onclick="showPage('strategy')">
+      <div class="pillar-num">03</div>
+      <div class="pillar-name">Strategy</div>
+      <p>Market entry, investor readiness, GRC, financial modelling, and growth strategy — turning ambiguity into a clear path forward.</p>
+      <div class="pillar-link">TFL Strategy</div>
+    </div>
+  </div>
+
+  <section class="about-strip">
+    <div class="section-label">About TFL</div>
+    <div class="about-inner">
+      <h2>More than advisors —<br><em>partners in the journey.</em></h2>
+      <p>The Founders Lab is where founders build, raise, and exit — with trust, clarity and conviction. We combine legal precision, capital access, and strategic depth under one roof, so you never have to coordinate between disconnected advisors again.</p>
+      <p>Operating at the intersection of the GCC, India, and global markets, we bring cross-border expertise with the agility of a founder-focused team.</p>
+      <button class="btn btn-dark" onclick="showPage('capital')" style="margin-top:16px;">Explore our approach →</button>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">30<span>+</span></div>
+      <div class="stat-label">Years of combined experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">50<span>+</span></div>
+      <div class="stat-label">Clients served across all verticals</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Operating markets</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Industries represented</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Integrated verticals — Legal, Capital, Strategy</div>
+    </div>
+  </div>
+
+  <section style="background: var(--white);">
+    <div class="section-label">How We Work</div>
+    <h2 style="font-size: clamp(32px,4vw,56px); max-width: 600px; line-height: 1.15;">Bespoke engagements, built around <em style="color:var(--ink-muted);">your stage</em></h2>
+    <div class="models-grid">
+      <div class="model-card reveal">
+        <div class="model-icon">§</div>
+        <h3>Retainer Advisory</h3>
+        <p>Always-on legal and advisory counsel. Flat monthly fee, predictable access, no billing surprises. Ideal for growing startups who need a trusted partner on call.</p>
+        <div class="model-price">From AED 3,000 / month</div>
+      </div>
+      <div class="model-card reveal reveal-delay-1">
+        <div class="model-icon">◈</div>
+        <h3>Transaction Mandate</h3>
+        <p>For specific events: fundraising rounds, M&A, restructuring, or a complex cross-border deal. Success-linked structures available.</p>
+        <div class="model-price">Success + fixed hybrid</div>
+      </div>
+      <div class="model-card reveal reveal-delay-2">
+        <div class="model-icon">⟡</div>
+        <h3>Strategy Sprint</h3>
+        <p>Focused 4–8 week engagements to solve a defined problem: market entry, investor readiness, ESOP design, financial modelling, GRC setup.</p>
+        <div class="model-price">Fixed project fee</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="testimonials-section">
+    <div class="section-label">Client Testimonials</div>
+    <h2 style="font-size:clamp(28px,3.5vw,48px);line-height:1.15;max-width:600px;">What founders say about <em style="color:var(--ink-muted);">working with us.</em></h2>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card empty reveal">
+        <div class="empty-icon">❝</div>
+        <div class="testimonial-text placeholder">Add your first client testimonial here — replace this card with a real quote from a founder you've worked with.</div>
+        <div class="testimonial-author" style="border-top:none;">
+          <div class="testimonial-name" style="color:var(--ink-muted);">Client Name</div>
+          <div class="testimonial-role">Role, Company · [Service Used]</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card empty reveal reveal-delay-1">
+        <div class="empty-icon">❝</div>
+        <div class="testimonial-text placeholder">Add a second testimonial here. Works best with a specific outcome: "TFL helped us structure our shareholder agreement in 48 hours ahead of our term sheet."</div>
+        <div class="testimonial-author" style="border-top:none;">
+          <div class="testimonial-name" style="color:var(--ink-muted);">Client Name</div>
+          <div class="testimonial-role">Role, Company · [Service Used]</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card empty reveal reveal-delay-2">
+        <div class="empty-icon">❝</div>
+        <div class="testimonial-text placeholder">A third testimonial from a retainer client works well here — emphasising responsiveness, trust, and ongoing value rather than a one-off engagement.</div>
+        <div class="testimonial-author" style="border-top:none;">
+          <div class="testimonial-name" style="color:var(--ink-muted);">Client Name</div>
+          <div class="testimonial-role">Role, Company · [Service Used]</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:40px;padding:24px 32px;background:var(--gold-light);border-radius:8px;border-left:3px solid var(--gold);">
+      <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;"><strong style="color:var(--ink);">To fill in testimonials:</strong> Replace the card content above with real quotes. Each card has a quote text, client name, role/company, and optionally a service badge. Remove this note and the dashed borders on the cards once filled. For real filled cards, remove the <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;">empty</code> class from the card div.</p>
+    </div>
+  </div>
+
+  <div id="contact-section">
+    <div class="cta-section">
+      <div>
+        <div class="section-label" style="color:rgba(255,255,255,0.3);">Get In Touch</div>
+        <h2>Let's build something <em>worth building.</em></h2>
+      </div>
+      <div class="cta-right">
+        <p>Tell us what you're working on. We'll tell you how we can help — no obligation, no jargon, just a straight conversation.</p>
+        <div class="cta-form">
+          <div class="form-row">
+            <input type="text" placeholder="Your name">
+            <input type="email" placeholder="Email address">
+          </div>
+          <select>
+            <option value="" disabled selected>What are you looking for?</option>
+            <option>Legal Advisory</option>
+            <option>Fundraising / Capital</option>
+            <option>M&amp;A Advisory</option>
+            <option>Strategy &amp; GRC</option>
+            <option>Zero-to-One Setup</option>
+            <option>Not sure yet</option>
+          </select>
+          <textarea placeholder="Tell us briefly about your situation..."></textarea>
+          <button class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top footer-bottom">
+      <div>
+        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('legal')">TFL Legal</a>
+        <a onclick="showPage('capital')">TFL Capital</a>
+        <a onclick="showPage('strategy')">TFL Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">About TFL</a>
+        <a onclick="showPage('blog')">Insights</a>
+        <a onclick="scrollToContact()">Work With Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;opacity:0.7;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Twin Towers, Fujairah Creative City Media Free Zone<br>P.O. Box 4422, Fujairah, UAE</span>
+        </div>
+        <a href="mailto:varsha@thefounderslab.me" style="display:flex;align-items:center;gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          varsha@thefounderslab.me
+        </a>
+        <a href="https://www.linkedin.com/company/tfl-me/posts/?feedView=all" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Founders Lab by Vriddhi Ventures FZ LLC. All rights reserved.</p>
+      <div class="footer-contact"><a href="#" class="footer-policy-link">Terms &amp; Conditions</a> &nbsp;·&nbsp; <a href="#" class="footer-policy-link">Privacy Policy</a></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     LEGAL
+══════════════════════════════════════ -->
+<div id="page-legal" class="page">
+
+  <div class="service-hero legal">
+    <div class="service-hero-label">TFL Legal</div>
+    <h1>Legal Advisory</h1>
+    <p>Comprehensive legal support for founders, startups, and VC firms — built to scale and survive every stage of diligence.</p>
+  </div>
+
+  <div class="services-content">
+    <div class="section-label">What We Do</div>
+    <h2 style="font-size:clamp(32px,4vw,52px); max-width:700px; line-height:1.15;">Legal foundations that <em style="color:var(--ink-muted);">protect, scale,</em> and attract capital.</h2>
+
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <span class="service-tag">Incorporation</span>
+        <h3>Zero-to-One Setup</h3>
+        <p>From concept to company. We assess your business model, identify the right UAE jurisdiction (Mainland, DIFC, ADGM, freezone), and build your operational legal foundation.</p>
+        <ul class="service-bullets">
+          <li>Jurisdiction selection &amp; incorporation</li>
+          <li>Founders' agreement</li>
+          <li>Regulatory licensing guidance</li>
+          <li>Initial governance setup</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">Corporate &amp; Commercial</span>
+        <h3>Contracts &amp; Structuring</h3>
+        <p>Tailored legal solutions for every stage of growth — from your first hire to your first institutional investor.</p>
+        <ul class="service-bullets">
+          <li>Shareholder &amp; investment agreements</li>
+          <li>ESOP design &amp; implementation</li>
+          <li>SaaS, licensing &amp; distribution contracts</li>
+          <li>Employment &amp; advisory structures</li>
+          <li>Cross-border structuring</li>
+          <li>IP ownership &amp; protection</li>
+        </ul>
+      </div>
+      <div class="service-item reveal">
+        <span class="service-tag">Transactions</span>
+        <h3>Legal Due Diligence</h3>
+        <p>Thorough due diligence processes to identify risks and ensure compliance, protecting your interests at every critical transaction point.</p>
+        <ul class="service-bullets">
+          <li>Corporate &amp; legal risk assessment</li>
+          <li>IP &amp; technology diligence</li>
+          <li>Employment &amp; regulatory review</li>
+          <li>Data room preparation</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">Compliance</span>
+        <h3>AML, GRC &amp; Risk</h3>
+        <p>Governance, risk, and compliance frameworks built for startups preparing for institutional scrutiny — investors, acquirers, or regulated markets.</p>
+        <ul class="service-bullets">
+          <li>AML policy design</li>
+          <li>Compliance readiness assessments</li>
+          <li>Employment relations &amp; dispute resolution</li>
+          <li>Board &amp; governance frameworks</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Retainer pricing block -->
+    <div style="background:rgba(74,12,35,0.05);border-radius:16px;padding:56px;margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;" class="reveal">
+      <div>
+        <div class="section-label" style="color:var(--legal);">Legal Retainer</div>
+        <h2 style="font-size:clamp(28px,3vw,44px);line-height:1.25;"><strong>Legal Counsel that knows<br><em style="color:var(--legal);">your business.</em></strong></h2>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink-soft);margin-top:16px;margin-bottom:32px;">A retainer with TFL Legal is a standing relationship, not a helpline. Your counsel knows your structure, your agreements, and what's at stake — so when something moves, you have an informed answer, not an invoice for catching up.</p>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="border-left:1px solid var(--gold);padding-left:16px;">
+            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;">Fixed monthly fee</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--ink-soft);">One predictable cost. No billable hour surprises.</div>
+          </div>
+          <div style="border-left:1px solid var(--gold);padding-left:16px;">
+            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;">Rollover unused hours</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--ink-soft);">Hours you don't use carry forward to the following month.</div>
+          </div>
+          <div style="border-left:1px solid var(--gold);padding-left:16px;">
+            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;">Borrow ahead when you need it</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--ink-soft);">Draw on next month's hours during a heavy period — flexibility built in, not charged extra.</div>
+          </div>
+          <div style="border-left:1px solid var(--gold);padding-left:16px;">
+            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;">Dedicated concierge</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--ink-soft);">A named advisor reviews your usage and keeps your plan right-sized.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--white);border-radius:12px;padding:40px;border:1px solid var(--border);">
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--border);">Retainer tiers</div>
+          <div style="border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="font-family:var(--font-display);font-size:20px;">Starter</div>
+              <span class="blog-card-tag tag-tier-blue" style="margin-bottom:0;">New Business</span>
+            </div>
+            <div style="font-size:13px;color:var(--ink-soft);margin:12px 0 6px;">Contracts, employment basics, agreement review & general advisory</div>
+            <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#8a6d20;margin-top:8px;">AED 3,000 – 5,000 <span style="font-size:0.65em;">/ mo</span></div>
+          </div>
+          <div style="border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="font-family:var(--font-display);font-size:20px;">Growth</div>
+              <span class="blog-card-tag tag-tier-green" style="margin-bottom:0;">Raise-ready</span>
+            </div>
+            <div style="font-size:13px;color:var(--ink-soft);margin:12px 0 6px;">+ Data room vetting, investor docs, term sheet &amp; SPA review</div>
+            <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#8a6d20;margin-top:8px;">AED 6,000 – 9,000 <span style="font-size:0.65em;">/ mo</span></div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="font-family:var(--font-display);font-size:20px;">Scale</div>
+              <span class="blog-card-tag tag-tier-red" style="margin-bottom:0;">Strategic counsel</span>
+            </div>
+            <div style="font-size:13px;color:var(--ink-soft);margin:12px 0 6px;">+ Appointed legal team, cross-border matters &amp; fractional GC access</div>
+            <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#8a6d20;margin-top:8px;">AED 10,000 – 50,000 <span style="font-size:0.65em;">/ mo</span></div>
+          </div>
+          <button class="btn btn-dark btn-scoping" style="margin-top:32px;width:100%;justify-content:center;" onclick="scrollToContactLegal()">Book a scoping call →</button>
+          <div style="font-size:12px;color:var(--ink-muted);text-align:center;margin-top:12px;">Month-to-month or quarterly. All fees quoted ex-VAT.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TESTIMONIALS ── -->
+  <div id="contact-section-legal">
+    <div class="cta-section">
+      <div>
+        <div class="section-label" style="color:rgba(255,255,255,0.3);">Free Consultation</div>
+        <h2>Start with a <em>Founder Legal Health Check.</em></h2>
+      </div>
+      <div class="cta-right">
+        <p>A 60-minute focused session to identify gaps in your legal structure before they become expensive problems.</p>
+        <div class="cta-form">
+          <div class="form-row">
+            <input type="text" placeholder="Your name">
+            <input type="email" placeholder="Email address">
+          </div>
+          <input type="text" placeholder="Company name &amp; stage">
+          <textarea placeholder="What's your most pressing legal challenge right now?"></textarea>
+          <button class="btn btn-dark btn-scoping" style="align-self:flex-start;">Book Health Check →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top footer-bottom">
+      <div>
+        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('legal')">TFL Legal</a>
+        <a onclick="showPage('capital')">TFL Capital</a>
+        <a onclick="showPage('strategy')">TFL Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">About TFL</a>
+        <a onclick="showPage('blog')">Insights</a>
+        <a onclick="scrollToContact()">Work With Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;opacity:0.7;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Twin Towers, Fujairah Creative City Media Free Zone<br>P.O. Box 4422, Fujairah, UAE</span>
+        </div>
+        <a href="mailto:varsha@thefounderslab.me" style="display:flex;align-items:center;gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          varsha@thefounderslab.me
+        </a>
+        <a href="https://www.linkedin.com/company/tfl-me/posts/?feedView=all" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Founders Lab by Vriddhi Ventures FZ LLC. All rights reserved.</p>
+      <div class="footer-contact"><a href="#" class="footer-policy-link">Terms &amp; Conditions</a> &nbsp;·&nbsp; <a href="#" class="footer-policy-link">Privacy Policy</a></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPITAL
+══════════════════════════════════════ -->
+<div id="page-capital" class="page">
+
+  <div class="service-hero capital">
+    <div style="position:absolute;right:48px;top:50%;transform:translateY(-50%);">
+      <canvas id="capitalCanvas" width="300" height="300" style="width:300px;height:300px;"></canvas>
+    </div>
+    <div class="service-hero-label">TFL Capital</div>
+    <h1>Capital Advisory</h1>
+    <p>From seed rounds to complex M&A — we position your story, structure your deal, and help you close capital that moves your vision forward.</p>
+  </div>
+
+  <div class="services-content">
+    <div class="section-label">What We Do</div>
+    <h2 style="font-size:clamp(32px,4vw,52px); max-width:700px; line-height:1.15;">Capital that <em style="color:var(--ink-muted);">moves you</em> — equity, debt, hybrid.</h2>
+
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <span class="service-tag">Fundraising</span>
+        <h3>Capital Raises</h3>
+        <p>We guide mature startups and mid-market companies through raising the right capital — our role goes far beyond introductions.</p>
+        <ul class="service-bullets">
+          <li>Seed, Pre-Series A, Series A–C</li>
+          <li>Strategic &amp; institutional capital</li>
+          <li>Investor targeting &amp; positioning</li>
+          <li>Term sheet negotiation &amp; deal structuring</li>
+          <li>Founder protection &amp; governance alignment</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">M&amp;A — Buy Side</span>
+        <h3>Acquisitions</h3>
+        <p>For PE funds, family offices, and corporates seeking strategic targets. We manage the process end-to-end with discipline and discretion.</p>
+        <ul class="service-bullets">
+          <li>Target identification &amp; screening</li>
+          <li>Deal structuring &amp; valuation support</li>
+          <li>Due diligence management</li>
+          <li>SPA / SHA negotiation</li>
+          <li>Post-acquisition integration planning</li>
+        </ul>
+      </div>
+      <div class="service-item reveal">
+        <span class="service-tag">M&amp;A — Sell Side</span>
+        <h3>Exits &amp; Divestments</h3>
+        <p>Preparing founders for their first exit or helping corporates divest strategically — with clarity, maximum value, and founder protection at the core.</p>
+        <ul class="service-bullets">
+          <li>Exit readiness &amp; positioning</li>
+          <li>Investor &amp; acquirer outreach</li>
+          <li>Transaction management</li>
+          <li>Negotiation &amp; closing support</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">Minority &amp; Control</span>
+        <h3>Minority Investments</h3>
+        <p>Advising founders and investors on minority stake transactions, governance alignment, and investor rights — ensuring both sides walk away confident.</p>
+        <ul class="service-bullets">
+          <li>Minority stake structuring</li>
+          <li>Investor rights negotiation</li>
+          <li>Governance alignment</li>
+          <li>Shareholder agreement counsel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div>
+      <div class="section-label" style="color:rgba(255,255,255,0.3);">Capital Advisory</div>
+      <h2>Ready to raise — or ready to <em>exit?</em></h2>
+    </div>
+    <div class="cta-right">
+      <p>Whether you're preparing for your first round or your first exit, let's talk about what the right deal looks like for you.</p>
+      <div class="cta-form">
+        <div class="form-row">
+          <input type="text" placeholder="Your name">
+          <input type="email" placeholder="Email address">
+        </div>
+        <select>
+          <option value="" disabled selected>Type of capital need</option>
+          <option>Seed / Pre-seed raise</option>
+          <option>Series A / B raise</option>
+          <option>Buy-side M&amp;A</option>
+          <option>Sell-side / Exit</option>
+          <option>Minority investment</option>
+        </select>
+        <textarea placeholder="Tell us about the opportunity..."></textarea>
+        <button class="btn btn-dark btn-capital-slide" style="align-self:flex-start;">Start the Conversation →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top footer-bottom">
+      <div>
+        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('legal')">TFL Legal</a>
+        <a onclick="showPage('capital')">TFL Capital</a>
+        <a onclick="showPage('strategy')">TFL Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">About TFL</a>
+        <a onclick="showPage('blog')">Insights</a>
+        <a onclick="scrollToContact()">Work With Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;opacity:0.7;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Twin Towers, Fujairah Creative City Media Free Zone<br>P.O. Box 4422, Fujairah, UAE</span>
+        </div>
+        <a href="mailto:varsha@thefounderslab.me" style="display:flex;align-items:center;gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          varsha@thefounderslab.me
+        </a>
+        <a href="https://www.linkedin.com/company/tfl-me/posts/?feedView=all" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Founders Lab by Vriddhi Ventures FZ LLC. All rights reserved.</p>
+      <div class="footer-contact"><a href="#" class="footer-policy-link">Terms &amp; Conditions</a> &nbsp;·&nbsp; <a href="#" class="footer-policy-link">Privacy Policy</a></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     STRATEGY
+══════════════════════════════════════ -->
+<div id="page-strategy" class="page">
+
+  <div class="service-hero strategy">
+    <div class="service-hero-label">TFL Strategy</div>
+    <h1>Strategy Advisory</h1>
+    <p>Clarity before capital. Structure before scale. We translate complexity into actionable strategy — and keep you investor-ready at every turn.</p>
+  </div>
+
+  <div class="services-content">
+    <div class="section-label">What We Do</div>
+    <h2 style="font-size:clamp(32px,4vw,52px); max-width:700px; line-height:1.15;">Turning <em style="color:var(--ink-muted);">uncertainty into clarity,</em> vision into action.</h2>
+
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <span class="service-tag">Growth</span>
+        <h3>Business Strategy</h3>
+        <p>From market entry to expansion — we refine your model, sharpen your go-to-market, and help you find the right competitive position.</p>
+        <ul class="service-bullets">
+          <li>Business model refinement</li>
+          <li>Market entry &amp; expansion strategy</li>
+          <li>Pricing &amp; unit economics</li>
+          <li>Go-to-market advisory</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">Investor Readiness</span>
+        <h3>Pitch &amp; Narrative</h3>
+        <p>We help you build a compelling equity story, prepare for investor scrutiny, and walk into every room with conviction and a clean data room.</p>
+        <ul class="service-bullets">
+          <li>Pitch deck creation &amp; refinement</li>
+          <li>Equity story &amp; narrative building</li>
+          <li>Investor Q&amp;A preparation</li>
+          <li>Data room structuring</li>
+        </ul>
+      </div>
+      <div class="service-item reveal">
+        <span class="service-tag">Finance</span>
+        <h3>Financial Strategy</h3>
+        <p>Robust financial modelling and planning that gives you clarity on runway, scenarios, and valuation — whether for internal decisions or investor conversations.</p>
+        <ul class="service-bullets">
+          <li>Financial forecasting &amp; modelling</li>
+          <li>Cash-flow &amp; runway planning</li>
+          <li>Scenario analysis</li>
+          <li>Valuation support</li>
+        </ul>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-tag">GRC</span>
+        <h3>Governance, Risk &amp; Compliance</h3>
+        <p>Building governance frameworks and risk infrastructure that makes your company investable — and keeps it operating cleanly as you scale.</p>
+        <ul class="service-bullets">
+          <li>Board &amp; governance frameworks</li>
+          <li>Risk mapping &amp; mitigation</li>
+          <li>Compliance readiness for investors</li>
+          <li>Policy &amp; control design</li>
+          <li>IT implementation &amp; risk management</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div>
+      <div class="section-label" style="color:rgba(255,255,255,0.3);">Strategy Advisory</div>
+      <h2>Let's map your <em>path forward.</em></h2>
+    </div>
+    <div class="cta-right">
+      <p>Whether you need a strategic sprint or an ongoing advisory partner, we work at the speed you need.</p>
+      <div class="cta-form">
+        <div class="form-row">
+          <input type="text" placeholder="Your name">
+          <input type="email" placeholder="Email address">
+        </div>
+        <select>
+          <option value="" disabled selected>Area of focus</option>
+          <option>Growth &amp; Market Strategy</option>
+          <option>Investor Readiness</option>
+          <option>Financial Modelling</option>
+          <option>GRC Setup</option>
+          <option>Full Advisory Retainer</option>
+        </select>
+        <textarea placeholder="What challenge are you trying to solve?"></textarea>
+        <button class="btn btn-primary" style="align-self:flex-start;">Let's Talk →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top footer-bottom">
+      <div>
+        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('legal')">TFL Legal</a>
+        <a onclick="showPage('capital')">TFL Capital</a>
+        <a onclick="showPage('strategy')">TFL Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">About TFL</a>
+        <a onclick="showPage('blog')">Insights</a>
+        <a onclick="scrollToContact()">Work With Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;opacity:0.7;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Twin Towers, Fujairah Creative City Media Free Zone<br>P.O. Box 4422, Fujairah, UAE</span>
+        </div>
+        <a href="mailto:varsha@thefounderslab.me" style="display:flex;align-items:center;gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          varsha@thefounderslab.me
+        </a>
+        <a href="https://www.linkedin.com/company/tfl-me/posts/?feedView=all" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Founders Lab by Vriddhi Ventures FZ LLC. All rights reserved.</p>
+      <div class="footer-contact"><a href="#" class="footer-policy-link">Terms &amp; Conditions</a> &nbsp;·&nbsp; <a href="#" class="footer-policy-link">Privacy Policy</a></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     BLOG / INSIGHTS
+══════════════════════════════════════ -->
+<div id="page-blog" class="page">
+
+  <div class="blog-hero">
+    <div class="section-label" style="color:rgba(255,255,255,0.3);">TFL Insights</div>
+    <h1>Perspectives on<br><em style="font-style:italic;color:rgba(255,255,255,0.4);">building, raising,<br>and scaling.</em></h1>
+    <p>Legal clarity, capital intelligence, and strategic thinking — for founders who move fast.</p>
+  </div>
+
+  <div class="blog-filters" id="blogFilters">
+    <button class="filter-btn active" onclick="filterBlog('all', this)">All Insights</button>
+    <button class="filter-btn legal-filter" onclick="filterBlog('legal', this)">Legal</button>
+    <button class="filter-btn capital-filter" onclick="filterBlog('capital', this)">Capital</button>
+    <button class="filter-btn strategy-filter" onclick="filterBlog('strategy', this)">Strategy</button>
+  </div>
+
+  <div class="blog-grid" id="blogGrid">
+    <div class="blog-card" data-tag="legal">
+      <span class="blog-card-tag tag-legal">Legal</span>
+      <h3>5 things founders get wrong in shareholder agreements before a Series A</h3>
+      <p>Most early shareholder agreements are written for the current moment — not the moment when a VC arrives with a term sheet. Here's what to fix before it's too late.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">March 2025</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="capital">
+      <span class="blog-card-tag tag-capital">Capital</span>
+      <h3>What GCC investors actually look for in a pre-seed deck — and what kills deals</h3>
+      <p>After reviewing hundreds of decks across the UAE and wider GCC ecosystem, patterns emerge. Some kill deals in the first slide. Here's how to avoid them.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">February 2025</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="strategy">
+      <span class="blog-card-tag tag-strategy">Strategy</span>
+      <h3>DIFC vs ADGM vs Mainland — choosing the right UAE structure for your startup</h3>
+      <p>The jurisdiction decision isn't just legal — it shapes your tax position, fundraising optionality, and long-term exit path. Here's a framework for making it.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">January 2025</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="legal">
+      <span class="blog-card-tag tag-legal">Legal</span>
+      <h3>Why your ESOP documents are probably unenforceable — and how to fix them</h3>
+      <p>ESOP frameworks in UAE startups are routinely written as templates without jurisdiction-specific customisation. This creates real risk when talent tries to exercise options.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">December 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="capital">
+      <span class="blog-card-tag tag-capital">Capital</span>
+      <h3>The data room checklist every founder should build before starting a raise</h3>
+      <p>Investors move at the speed of their confidence in your documentation. A well-prepared data room shortens due diligence by weeks and signals seriousness.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">November 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="strategy">
+      <span class="blog-card-tag tag-strategy">Strategy</span>
+      <h3>Unit economics founders should understand before going to market</h3>
+      <p>CAC, LTV, payback period, contribution margin — these aren't just metrics for VCs. They're the language of a sustainable business. Here's how to build fluency.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">October 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="legal">
+      <span class="blog-card-tag tag-legal">Legal</span>
+      <h3>Cross-border structuring for GCC founders expanding into India or the UK</h3>
+      <p>When your customers are global but your entity is local, there are tax, IP, and liability implications that need to be designed from the start — not fixed later.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">September 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="capital">
+      <span class="blog-card-tag tag-capital">Capital</span>
+      <h3>The family office opportunity: how GCC startups can access patient capital</h3>
+      <p>Family offices are the most underutilised capital source for regional startups. They move differently to VCs — slower to commit, longer to hold, and often more founder-friendly.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">August 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+    <div class="blog-card" data-tag="strategy">
+      <span class="blog-card-tag tag-strategy">Strategy</span>
+      <h3>How to build a governance structure that actually helps (not just ticks boxes)</h3>
+      <p>Most early-stage governance is either nonexistent or performative. The sweet spot is governance that gives you real decision-making clarity and looks credible to investors.</p>
+      <div class="blog-card-meta">
+        <span class="blog-date">July 2024</span>
+        <span class="blog-read">Read more →</span>
+      </div>
+    </div>
+  </div>
+
+  <section style="background:var(--cream-dark);text-align:center;">
+    <div class="section-label" style="justify-content:center;">Stay Informed</div>
+    <h2 style="font-size:clamp(28px,4vw,52px);margin-bottom:16px;">Get TFL Insights delivered.</h2>
+    <p style="color:var(--ink-soft);font-size:15px;max-width:480px;margin:0 auto 40px;line-height:1.7;">Monthly legal, capital, and strategy perspectives for founders building in the GCC and beyond.</p>
+    <div style="display:flex;gap:12px;justify-content:center;max-width:420px;margin:0 auto;flex-wrap:wrap;">
+      <input type="email" placeholder="Your email address" style="flex:1;min-width:200px;padding:14px 20px;border:1px solid var(--border);border-radius:40px;font-family:var(--font-body);font-size:14px;background:var(--white);outline:none;">
+      <button class="btn btn-dark">Subscribe</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top footer-bottom">
+      <div>
+        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('legal')">TFL Legal</a>
+        <a onclick="showPage('capital')">TFL Capital</a>
+        <a onclick="showPage('strategy')">TFL Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">About TFL</a>
+        <a onclick="showPage('blog')">Insights</a>
+        <a onclick="scrollToContact()">Work With Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;opacity:0.7;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Twin Towers, Fujairah Creative City Media Free Zone<br>P.O. Box 4422, Fujairah, UAE</span>
+        </div>
+        <a href="mailto:varsha@thefounderslab.me" style="display:flex;align-items:center;gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          varsha@thefounderslab.me
+        </a>
+        <a href="https://www.linkedin.com/company/tfl-me/posts/?feedView=all" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Founders Lab by Vriddhi Ventures FZ LLC. All rights reserved.</p>
+      <div class="footer-contact"><a href="#" class="footer-policy-link">Terms &amp; Conditions</a> &nbsp;·&nbsp; <a href="#" class="footer-policy-link">Privacy Policy</a></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── Custom cursor ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0, lastBgCheck = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+function checkCursorBg() {
+  const now = performance.now();
+  if (now - lastBgCheck < 80) return;
+  lastBgCheck = now;
+  let node = document.elementFromPoint(mx, my);
+  while (node && node !== document.documentElement) {
+    const bg = getComputedStyle(node).backgroundColor;
+    if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+      const m = bg.match(/[\d.]+/g);
+      if (m) {
+        const lum = (0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2]) / 255;
+        document.body.classList.toggle('cursor-on-dark', lum < 0.5);
+        return;
+      }
+    }
+    node = node.parentElement;
+  }
+}
+
+function animateCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  checkCursorBg();
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// ── Hover effect on interactive elements ──
+function bindHover() {
+  document.querySelectorAll('a, button, .btn, .pillar-card, .nav-link, .blog-card, .model-card, .team-card, .filter-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+}
+bindHover();
+
+// ── Page routing ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-link[data-page]').forEach(l => {
+    l.classList.toggle('active', l.dataset.page === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (document.getElementById('navLinks').classList.contains('open')) toggleMenu();
+  setTimeout(initReveal, 80);
+  bindHover();
+}
+
+// ── Contact scroll helpers ──
+function scrollToContact() {
+  if (!document.getElementById('page-home').classList.contains('active')) {
+    showPage('home');
+    setTimeout(() => document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }), 450);
+  } else {
+    document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+function scrollToContactLegal() {
+  document.getElementById('contact-section-legal').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Mobile menu ──
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// ── Blog filter ──
+function filterBlog(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      if (tag === 'all' ? b.textContent.toLowerCase().includes('all') : b.textContent.toLowerCase().includes(tag)) {
+        b.classList.add('active');
+      }
+    });
+  }
+  document.querySelectorAll('.blog-card').forEach(card => {
+    card.style.display = (tag === 'all' || card.dataset.tag === tag) ? 'flex' : 'none';
+  });
+}
+
+// ── Stats counter ──
+function animateCounter(el, target, duration) {
+  const suffix = el.querySelector('span') ? el.querySelector('span').outerHTML : '';
+  const start = performance.now();
+  (function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.innerHTML = Math.round(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  })(start);
+}
+
+function initStatsCounter() {
+  const bar = document.querySelector('.stats-bar');
+  if (!bar) return;
+  const obs = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    obs.unobserve(bar);
+    bar.querySelectorAll('.stat-num').forEach((el, i) => {
+      const target = parseInt(el.textContent, 10);
+      if (!isNaN(target)) setTimeout(() => animateCounter(el, target, 1800), i * 180);
+    });
+  }, { threshold: 0.3 });
+  obs.observe(bar);
+}
+initStatsCounter();
+
+// ── WhatsApp floating button visibility ──
+(function initWAFloat() {
+  const btn = document.getElementById('waFloat');
+  if (!btn) return;
+
+  function check() {
+    const scrolled = window.scrollY + window.innerHeight;
+    const total    = document.documentElement.scrollHeight;
+    // Show once user has scrolled into the bottom ~42% of the active page
+    btn.classList.toggle('wa-visible', total > window.innerHeight && scrolled >= total * 0.58);
+  }
+
+  window.addEventListener('scroll', check, { passive: true });
+  window.addEventListener('resize', check, { passive: true });
+
+  // Re-evaluate after SPA navigation (showPage resets scroll to top)
+  const _orig = window.showPage;
+  window.showPage = function(id) {
+    _orig(id);
+    setTimeout(check, 350);
+  };
+
+  check();
+})();
+
+// ── Capital money symbols animation ──
+(function initCapitalAnimation() {
+  const canvas = document.getElementById('capitalCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const W = 300, H = 300;
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
+  ctx.scale(DPR, DPR);
+
+  const SYMBOLS = ['$', '€', '£', '¥', '₿', '%', '◈', '∑', '♦', '₹'];
+  let isHovered = false;
+  let lastT = 0;
+
+  class MoneySymbol {
+    constructor(index, total) {
+      this.symbol = SYMBOLS[index % SYMBOLS.length];
+      this.x = 30 + Math.random() * (W - 60);
+      this.y = 30 + Math.random() * (H - 60);
+      this.size = 16 + Math.random() * 18;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.35;
+      this.phase = (index / total) * Math.PI * 2;
+      this.cycleDur = 3.5 + Math.random() * 2;
+      this.t = -(index / total) * this.cycleDur; // stagger start
+      this.drawProgress = 0;
+    }
+
+    getOpacity(t) {
+      const c = ((t % this.cycleDur) + this.cycleDur) % this.cycleDur;
+      const fadeIn = 0.9, hold = 1.8, fadeOut = 0.8;
+      if (c < fadeIn) return c / fadeIn;
+      if (c < fadeIn + hold) return 1;
+      if (c < fadeIn + hold + fadeOut) return 1 - (c - fadeIn - hold) / fadeOut;
+      return 0;
+    }
+
+    update(dt) {
+      this.t += dt;
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 18 || this.x > W - 18) this.vx *= -1;
+      if (this.y < 18 || this.y > H - 18) this.vy *= -1;
+    }
+
+    draw(ctx, isHovered) {
+      const opacity = this.getOpacity(this.t);
+      if (opacity <= 0.01) return;
+
+      // Pulse: faster + bigger on hover
+      const pulseSpeed = isHovered ? 4 : 1.6;
+      const pulseAmp = isHovered ? 0.18 : 0.06;
+      const scale = 1 + pulseAmp * Math.sin(this.t * pulseSpeed + this.phase);
+      const size = this.size * scale;
+
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.globalAlpha = opacity * (isHovered ? 1 : 0.82);
+
+      // Glow on hover
+      if (isHovered) {
+        ctx.shadowColor = 'rgba(255,255,255,0.6)';
+        ctx.shadowBlur = 12;
+      }
+
+      ctx.font = `300 ${size}px 'Cormorant Garamond', Georgia, serif`;
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(this.symbol, 0, 0);
+      ctx.restore();
+    }
+  }
+
+  const COUNT = 10;
+  const particles = Array.from({ length: COUNT }, (_, i) => new MoneySymbol(i, COUNT));
+
+  function animate(timestamp) {
+    const dt = Math.min((timestamp - lastT) / 1000, 0.05);
+    lastT = timestamp;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Subtle connecting threads between nearby symbols
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 110) {
+          const a = (1 - dist / 110) * 0.18 * (isHovered ? 2 : 1);
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(255,255,255,${a})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach(p => { p.update(dt); p.draw(ctx, isHovered); });
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(t => { lastT = t; animate(t); });
+
+  canvas.addEventListener('mouseenter', () => isHovered = true);
+  canvas.addEventListener('mouseleave', () => isHovered = false);
+})();
+
+// ── Network canvas animation ──
+(function initNetwork() {
+  const canvas = document.getElementById('networkCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const COUNT = 65;
+  const MAX_DIST = 130;
+  let particles = [];
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+
+  function W() { return canvas.getBoundingClientRect().width; }
+  function H() { return canvas.getBoundingClientRect().height; }
+
+  function makeParticle() {
+    return {
+      x: Math.random() * W(),
+      y: Math.random() * H(),
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 2 + 1.2
+    };
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: COUNT }, makeParticle);
+  }
+
+  function animate() {
+    const w = W(), h = H();
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fill();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+  window.addEventListener('resize', init);
+})();
+
+// ── Scroll reveal ──
+function initReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  if (!els.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  els.forEach(el => obs.observe(el));
+}
+initReveal();
+</script>
+<!-- WhatsApp floating button -->
+<a id="waFloat" href="https://wa.me/971563439335" target="_blank" aria-label="Chat on WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+</a>
+
+</body>
+</html>
