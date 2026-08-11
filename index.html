@@ -47,15 +47,45 @@ body.hovering.cursor-on-dark #cursor-ring { border-color: var(--gold); opacity: 
 @keyframes pageFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
 /* NAV */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: rgba(245,244,240,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: background .3s; }
+nav { position: fixed; top: 6px; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: transparent; transition: color .3s; }
+nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--nav-glass-left, 8px);
+  right: var(--nav-glass-right, 48px);
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 0;
+  transition: background .3s, border-color .3s, backdrop-filter .3s, box-shadow .3s;
+}
+nav > * { position: relative; z-index: 1; }
+nav.nav-transparent::before { background: transparent; border-color: transparent; backdrop-filter: none; box-shadow: none; }
+nav:not(.nav-transparent)::before {
+  background: rgba(245,244,240,0.72);
+  backdrop-filter: blur(18px) saturate(145%);
+  border-color: rgba(255,255,255,0.34);
+  box-shadow: 0 14px 42px rgba(26,28,36,0.12);
+}
 .nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 0.02em; color: var(--ink); cursor: pointer; }
 .nav-logo span { color: var(--gold); }
 .nav-links { display: flex; align-items: center; gap: 8px; }
+.mobile-menu-brand { display: none; }
 .nav-link { font-size: 13px; font-weight: 400; letter-spacing: 0.06em; color: var(--ink-soft); cursor: pointer; padding: 8px 16px; border-radius: 40px; transition: all .2s; text-transform: uppercase; border: 1px solid transparent; }
 .nav-link:hover { color: var(--ink); border-color: var(--border); }
 .nav-link.active { color: var(--ink); background: var(--white); border-color: var(--border); }
 .nav-link.cta { background: var(--ink); color: var(--white); border-color: var(--ink); }
 .nav-link.cta:hover { background: var(--accent); border-color: var(--accent); }
+nav.nav-transparent .nav-link { color: rgba(255,255,255,0.76); }
+nav.nav-transparent .nav-link:hover { color: var(--white); border-color: rgba(255,255,255,0.22); }
+nav.nav-transparent .nav-link.active { color: var(--white); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
+nav.nav-transparent .nav-link.cta { background: rgba(255,255,255,0.12); color: var(--white); border-color: rgba(255,255,255,0.18); }
+nav.nav-transparent .nav-link.cta:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
 
 /* Sections */
 section { padding: 120px 48px; }
@@ -86,15 +116,69 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
 .btn-dark { background: var(--ink); color: var(--white); }
 .btn-dark:hover { background: var(--accent); transform: translateY(-2px); }
+.btn.is-loading,
+.btn.is-success,
+.btn.is-error { pointer-events: none; }
+.btn.is-loading:hover,
+.btn.is-success:hover,
+.btn.is-error:hover { transform: none; }
+.btn.is-loading { opacity: 0.96; }
+.btn.is-success {
+  background: #2d8a57 !important;
+  color: var(--white) !important;
+  border-color: #2d8a57 !important;
+  box-shadow: 0 12px 28px rgba(45,138,87,0.24);
+}
+.btn.is-error {
+  background: #a84343 !important;
+  color: var(--white) !important;
+  border-color: #a84343 !important;
+  box-shadow: 0 12px 28px rgba(168,67,67,0.2);
+}
+.btn-state-icon { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.7px solid currentColor;
+  border-right-color: transparent;
+  animation: btnSpin .7s linear infinite;
+}
+.btn-checkmark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.7px solid currentColor;
+  position: relative;
+  animation: btnPopIn .24s var(--ease) both;
+}
+.btn-checkmark::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border-right: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+  transform: rotate(45deg);
+}
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+@keyframes btnPopIn {
+  from { opacity: 0; transform: scale(0.82); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 /* Pillars */
 .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); margin: 0; }
-.pillar-card { background: var(--cream); padding: 56px 40px; cursor: pointer; transition: all .4s var(--ease); position: relative; overflow: hidden; }
+.pillar-card { background: var(--cream); padding: 56px 40px; cursor: pointer; transition: transform .4s var(--ease), box-shadow .4s var(--ease); position: relative; overflow: hidden; }
 .pillar-card::before { content: ''; position: absolute; inset: 0; background: var(--pillar-color, var(--accent)); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease); z-index: 0; }
 .pillar-card:hover::before { transform: scaleY(1); }
+.pillar-card:hover { transform: translateY(-8px); box-shadow: 0 24px 50px rgba(26,28,36,0.12); }
 .pillar-card > * { position: relative; z-index: 1; transition: color .3s; }
 .pillar-card:hover .pillar-num, .pillar-card:hover .pillar-name, .pillar-card:hover p, .pillar-card:hover .pillar-link { color: var(--white); }
-.pillar-num { font-family: var(--font-display); font-size: 72px; font-weight: 300; color: var(--cream-dark); line-height: 1; margin-bottom: 32px; transition: color .3s; }
+.pillar-num { font-family: var(--font-display); font-size: 72px; font-weight: 300; color: var(--cream-dark); line-height: 1; margin-bottom: 32px; transition: color .3s, transform .35s var(--ease); }
+.pillar-card:hover .pillar-num { transform: translateY(-6px); }
 .pillar-name { font-family: var(--font-display); font-size: 36px; font-weight: 400; margin-bottom: 16px; color: var(--ink); }
 .pillar-card p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 32px; }
 .pillar-link { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); display: flex; align-items: center; gap: 8px; }
@@ -120,7 +204,9 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 /* Models */
 .models-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; }
 .model-card { border: 1px solid var(--border); border-radius: 12px; padding: 40px; transition: all .3s var(--ease); background: var(--cream); position: relative; overflow: hidden; }
-.model-card:hover { border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(26,28,36,0.08); }
+.model-card::before { content: ''; position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px; background: linear-gradient(90deg, rgba(201,168,76,0.9), rgba(43,58,107,0.55)); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.model-card:hover { border-color: var(--ink); transform: translateY(-6px); box-shadow: 0 24px 60px rgba(26,28,36,0.1); }
+.model-card:hover::before { transform: scaleX(1); }
 .model-icon { font-family: var(--font-display); font-size: 48px; color: var(--ink-muted); margin-bottom: 24px; line-height: 1; }
 .model-card h3 { font-family: var(--font-display); font-size: 28px; margin-bottom: 12px; }
 .model-card p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 24px; }
@@ -131,6 +217,9 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 .service-hero.legal { background: var(--legal); }
 .service-hero.capital { background: var(--capital); }
 .service-hero.strategy { background: var(--strategy); }
+.service-hero > :not(.service-hero-art) { position: relative; z-index: 1; }
+.service-hero-art { position: absolute; right: 48px; top: 50%; transform: translateY(-50%); z-index: 0; }
+.service-hero-art canvas { width: 300px; height: 300px; display: block; cursor: pointer; }
 .service-hero-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
 .service-hero-label::before { content: ''; width: 40px; height: 1px; background: rgba(255,255,255,0.3); }
 .service-hero h1 { font-size: clamp(48px, 7vw, 96px); color: var(--white); font-weight: 300; margin-bottom: 24px; }
@@ -140,8 +229,11 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 /* Services */
 .services-content { background: var(--white); padding: 80px 48px; }
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-top: 64px; }
-.service-item { background: var(--white); padding: 48px 40px; position: relative; overflow: hidden; }
+.service-item { background: var(--white); padding: 48px 40px; position: relative; overflow: hidden; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.service-item::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, rgba(201,168,76,0.85), rgba(43,58,107,0.55)); transform: scaleY(0); transform-origin: top; transition: transform .35s var(--ease); }
 .service-item::after { content: ''; position: absolute; bottom: 0; left: 40px; right: 40px; height: 1px; background: var(--border); }
+.service-item:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,28,36,0.08); }
+.service-item:hover::before { transform: scaleY(1); }
 .service-item h3 { font-size: 26px; margin-bottom: 16px; color: var(--ink); }
 .service-item p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 24px; }
 .service-tag { display: inline-block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--ink-muted); margin-bottom: 4px; }
@@ -150,14 +242,18 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 .service-bullets li::before { content: '—'; color: var(--ink-muted); flex-shrink: 0; }
 
 /* CTA / Contact */
-.cta-section { background: var(--ink); padding: 120px 48px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.cta-section { background: var(--ink); padding: 120px 48px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; overflow: hidden; }
+.cta-section > * { position: relative; z-index: 1; }
+.cta-section::before { content: ''; position: absolute; border-radius: 999px; pointer-events: none; filter: blur(8px); }
+.cta-section::before { width: 380px; height: 380px; top: -160px; right: -100px; background: radial-gradient(circle, rgba(43,58,107,0.34) 0%, rgba(43,58,107,0) 72%); }
 .cta-section h2 { font-size: clamp(40px,5vw,72px); color: var(--white); line-height: 1.1; }
 .cta-section h2 em { color: rgba(255,255,255,0.35); }
 .cta-right p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.8; margin-bottom: 40px; }
-.cta-form { display: flex; flex-direction: column; gap: 16px; }
-.cta-form input, .cta-form select, .cta-form textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-family: var(--font-body); font-size: 14px; padding: 16px 20px; border-radius: 8px; outline: none; transition: border-color .2s; }
+.cta-form { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; padding: 24px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); backdrop-filter: blur(14px); box-shadow: 0 28px 80px rgba(0,0,0,0.18); transition: border-color .25s var(--ease), box-shadow .25s var(--ease), transform .25s var(--ease); }
+.cta-form:focus-within { border-color: rgba(255,255,255,0.2); box-shadow: 0 32px 90px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.04); transform: translateY(-2px); }
+.cta-form input, .cta-form select, .cta-form textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-family: var(--font-body); font-size: 14px; padding: 16px 20px; border-radius: 8px; outline: none; transition: border-color .2s, background .2s, box-shadow .2s; }
 .cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(255,255,255,0.25); }
-.cta-form input:focus, .cta-form select:focus, .cta-form textarea:focus { border-color: rgba(255,255,255,0.3); }
+.cta-form input:focus, .cta-form select:focus, .cta-form textarea:focus { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,255,255,0.04); }
 .cta-form select option { background: var(--ink); }
 .cta-form textarea { resize: none; height: 100px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -190,8 +286,10 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 .filter-btn.capital-filter.active { background: var(--capital); border-color: var(--capital); }
 .filter-btn.strategy-filter.active { background: var(--strategy); border-color: var(--strategy); }
 .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); padding: 2px; }
-.blog-card { background: var(--cream); padding: 40px; cursor: pointer; transition: background .3s var(--ease); display: flex; flex-direction: column; }
-.blog-card:hover { background: var(--white); }
+.blog-card { background: var(--cream); padding: 40px; cursor: pointer; transition: background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.blog-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, rgba(201,168,76,0.9), rgba(43,58,107,0.65)); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.blog-card:hover { background: var(--white); transform: translateY(-4px); box-shadow: 0 18px 40px rgba(26,28,36,0.08); }
+.blog-card:hover::before { transform: scaleX(1); }
 .blog-card-tag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 24px; font-weight: 500; width: fit-content; }
 .tag-legal { background: rgba(74,12,35,0.3); color: var(--legal); }
 .tag-capital { background: rgba(0,64,64,0.3); color: var(--capital); }
@@ -216,16 +314,20 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
 
 /* Footer */
 footer { background: var(--ink); padding: 64px 48px 40px; }
-.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; }
+.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; align-items: start; }
+.footer-top > div:first-child { margin-top: -34px; }
 .footer-brand { font-family: var(--font-display); font-size: 32px; color: var(--white); font-weight: 400; margin-bottom: 16px; }
 .footer-brand span { color: var(--gold); }
+.footer-logo { height: 48px; width: auto; display: block; margin-bottom: 12px; margin-left: -12px; }
 .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 240px; }
+.footer-col { min-width: 0; }
 .footer-col h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 12px; cursor: pointer; transition: color .2s; text-decoration: none; }
 .footer-col a:hover { color: var(--white); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; }
 .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.25); }
 .footer-contact { font-size: 13px; color: rgba(255,255,255,0.4); }
+.footer-contact, .footer-col a { overflow-wrap: anywhere; }
 .footer-contact a { color: rgba(255,255,255,0.55); text-decoration: none; }
 .footer-contact a:hover { color: var(--white); }
 .footer-policy-link {
@@ -284,9 +386,11 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
 }
 
 /* Network ticker */
-.network-strip { background: var(--cream-dark); padding: 28px 48px; overflow: hidden; }
+.network-strip { background: var(--cream-dark); padding: 28px 48px; overflow: hidden; position: relative; }
 .network-inner { display: flex; gap: 0; align-items: center; animation: ticker 22s linear infinite; white-space: nowrap; width: max-content; }
-.network-item { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 0 24px; }
+.network-strip:hover .network-inner { animation-play-state: paused; }
+.network-item { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 0 24px; transition: color .25s var(--ease), transform .25s var(--ease); }
+.network-item:hover { color: var(--ink); transform: translateY(-1px); }
 .network-sep { color: var(--gold); font-size: 10px; }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -296,19 +400,27 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
 .reveal-delay-1 { transition-delay: .1s; }
 .reveal-delay-2 { transition-delay: .2s; }
 .reveal-delay-3 { transition-delay: .3s; }
+.fade-in { opacity: 0; animation: heroFadeUp .9s var(--ease) forwards; }
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* ══════════════════ HOME ══════════════════ */
-.hero {
-    min-height: 100vh;
+  .hero {
+    min-height: calc(100vh - 72px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: 0;
-    padding: 120px 6vw 80px;
+    padding: 108px 6vw 56px;
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
     position: relative;
     overflow: hidden;
   }
-  .hero-content { position: relative; z-index: 1; }
+  .hero-content { position: relative; z-index: 1; max-width: 640px; }
   .hero-visual {
     position: relative; z-index: 1;
     display: flex; align-items: center; justify-content: center;
@@ -338,31 +450,32 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: gray;
+    color: rgba(255,255,255,0.68);
     margin-bottom: 28px;
   }
   .hero-eyebrow::before {
     content: '';
     width: 32px; height: 1px;
-    background: var(--text-muted);
+    background: rgba(255,255,255,0.28);
   }
   .hero-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(52px, 8vw, 110px);
+    font-family: var(--font-display);
+    font-size: clamp(44px, 6.5vw, 88px);
     line-height: 0.95;
     font-weight: 400;
     letter-spacing: -0.02em;
-    max-width: 900px;
-    margin-bottom: 36px;
+    max-width: 720px;
+    margin-bottom: 24px;
   }
-  .hero-title em { font-style: italic; color: var(--mist); }
+  .hero-accent-build { color: rgba(255,255,255,0.92); }
+  .hero-accent-raise { color: rgba(201,168,76,0.9); }
+  .hero-accent-exit { color: rgba(194,207,255,0.88); }
   .hero-subtitle {
     font-size: clamp(15px, 1.8vw, 19px);
-    color: var(--text-dim);
-    color: gray;
+    color: rgba(255,255,255,0.7);
     max-width: 480px;
     line-height: 1.7;
-    margin-bottom: 56px;
+    margin-bottom: 40px;
     font-weight: 300;
   }
   /* Container for the logo */
@@ -371,12 +484,12 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
   align-items: center;
   gap: 10px;
   height: 100%;
-  margin-left: -24px;
+  margin-left: -40px;
 }
 
 /* The actual logo image */
 .nav-logo img {
-  height: 42px; /* Adjust this value to make it smaller or larger */
+  height: 52px; /* Adjust this value to make it smaller or larger */
   width: auto;  /* Maintains aspect ratio */
   display: block;
 }
@@ -385,12 +498,18 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     display: inline-flex; align-items: center; gap: 10px;
     font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
     padding: 15px 32px;
-    background: var(--white); color: var(--navy-deep);
-    border: none; border-radius: 1px;
+    background: var(--white); color: var(--ink);
+    border: 1px solid transparent; border-radius: 1px;
     text-decoration: none; cursor: pointer;
-    transition: background 0.25s, transform 0.25s;
+    transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
   }
-  .btn-primary:hover { background: var(--mist); transform: translateY(-1px); }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--white);
+    border-color: rgba(255,255,255,0.85);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.14), 0 14px 30px rgba(255,255,255,0.08);
+    transform: translateY(-1px);
+  }
   .btn-ghost {
     display: inline-flex; align-items: center; gap: 10px;
     font-size: 13px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
@@ -402,35 +521,197 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
   }
   .btn-ghost:hover { border-color: rgba(255,255,255,0.6); transform: translateY(-1px); }
 
+  #home-verticals { scroll-margin-top: 92px; }
+
+  @media (min-width: 1360px) {
+    nav,
+    section,
+    .hero,
+    .service-hero,
+    .services-content,
+    .cta-section,
+    .blog-hero,
+    .blog-filters,
+    .network-strip,
+    .stats-bar,
+    footer {
+      padding-left: clamp(72px, 7vw, 120px);
+      padding-right: clamp(72px, 7vw, 120px);
+    }
+
+    .pillars-grid,
+    .blog-grid {
+      padding-left: clamp(24px, 3vw, 56px);
+      padding-right: clamp(24px, 3vw, 56px);
+    }
+  }
+
 
 /* Mobile menu */
 .menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
-.menu-toggle span { width: 24px; height: 1.5px; background: var(--ink); display: block; transition: all .3s; }
+.menu-toggle span { width: 25px; height: 2px; border-radius: 999px; background: var(--ink); display: block; transition: transform .3s var(--ease), opacity .25s var(--ease), background .3s; transform-origin: center; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0.35); }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+nav.nav-transparent .menu-toggle span { background: var(--white); }
+body.menu-open { overflow: hidden; }
 
 /* Responsive */
 @media (max-width: 900px) {
-  nav { padding: 0 24px; }
-  .nav-links { display: none; flex-direction: column; position: fixed; inset: 0; background: var(--cream); justify-content: center; align-items: center; gap: 16px; z-index: 400; }
-  .nav-links.open { display: flex; }
-  .menu-toggle { display: flex; z-index: 501; }
-  section { padding: 80px 24px; }
-  .hero { padding: 120px 24px 64px; grid-template-columns: 1fr; }
+  #page-home { --home-ticker-height: 58px; }
+  nav { padding: 0 34px 0 16px; }
+  nav::before { left: var(--nav-glass-left, 10px); right: var(--nav-glass-right, 24px); border-radius: 18px; }
+  nav.menu-open::before { background: rgba(245,244,240,0.94); border-color: rgba(255,255,255,0.42); backdrop-filter: blur(16px) saturate(140%); box-shadow: 0 10px 30px rgba(26,28,36,0.1); }
+  nav.menu-open .menu-toggle span { background: var(--ink); }
+  .nav-logo { margin-left: 0; }
+  .nav-logo img { height: 50px; }
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    background: rgba(245,244,240,0.97);
+    backdrop-filter: blur(16px);
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    z-index: 400;
+    padding: 132px 24px 40px;
+    overflow-y: auto;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity .28s var(--ease), transform .32s var(--ease), visibility 0s linear .32s;
+  }
+  .nav-links.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition-delay: 0s, 0s, 0s;
+  }
+  .mobile-menu-brand {
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    cursor: pointer;
+  }
+  .mobile-menu-brand img { height: 40px; width: auto; display: block; }
+  .nav-links.open .nav-link {
+    color: var(--ink-soft);
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    padding: 12px 0;
+    width: auto;
+    max-width: none;
+    border-radius: 0;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .24s var(--ease), transform .28s var(--ease), color .2s, background .2s, border-color .2s;
+  }
+  .nav-links.open .nav-link { opacity: 1; transform: translateY(0); }
+  .nav-links.open .nav-link:nth-of-type(1) { transition-delay: 0.04s; }
+  .nav-links.open .nav-link:nth-of-type(2) { transition-delay: 0.08s; }
+  .nav-links.open .nav-link:nth-of-type(3) { transition-delay: 0.12s; }
+  .nav-links.open .nav-link:nth-of-type(4) { transition-delay: 0.16s; }
+  .nav-links.open .nav-link:nth-of-type(5) { transition-delay: 0.2s; }
+  .nav-links.open .nav-link:nth-of-type(6) { transition-delay: 0.24s; }
+  .nav-links.open .nav-link:hover { color: var(--ink); transform: translateY(-1px); }
+  .nav-links.open .nav-link.active { color: var(--ink); background: transparent; border-color: transparent; }
+  .nav-links.open .nav-link.cta {
+    width: auto;
+    max-width: none;
+    margin-top: 10px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+    box-shadow: 0 10px 24px rgba(26,28,36,0.12);
+  }
+  .nav-links.open .nav-link.cta:hover { background: var(--accent); border-color: var(--accent); }
+  .menu-toggle { display: flex; z-index: 501; padding: 8px; }
+  section { padding: 72px 20px; }
+  .hero { min-height: auto; width: 100%; max-width: 100%; margin-left: 0; padding: 88px 20px 24px; grid-template-columns: 1fr; gap: 42px; align-items: stretch; align-content: center; overflow: clip; }
+  #page-home .hero { min-height: calc(100vh - var(--home-ticker-height)); min-height: calc(100dvh - var(--home-ticker-height)); align-content: center; }
+  .hero-content { max-width: none; width: 100%; min-width: 0; }
+  .hero-eyebrow { margin-bottom: 42px; }
+  .hero-title { font-size: clamp(38px, 13vw, 60px); max-width: 100%; margin-bottom: 40px; }
+  .hero-subtitle { font-size: 14px; max-width: 100%; margin-bottom: 56px; }
+  .hero-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 16px; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-ghost { width: 100%; justify-content: center; }
   .hero-visual { display: none; }
+  .pillar-card { padding: 40px 24px; }
+  .pillar-num { font-size: 56px; margin-bottom: 24px; }
+  .pillar-name { font-size: 30px; }
   .pillars-grid { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: 1fr; }
-  .stats-bar { grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 24px; }
-  .stat-item { border: none; padding: 0; }
-  .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+  .stats-bar { grid-template-columns: 1fr; gap: 24px; padding: 40px 20px; text-align: center; }
+  .stat-item { border: none; padding: 0 0 24px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
+  .stat-item:last-child { padding-bottom: 0; border-bottom: none; }
+  .service-hero { min-height: auto; padding: 108px 20px 56px; }
+  .service-hero h1 { font-size: clamp(38px, 11vw, 60px); }
+  .service-hero p { font-size: 15px; max-width: none; }
+  .service-hero-art { display: none; }
+  .service-item { padding: 36px 24px; }
+  .service-item::after { left: 24px; right: 24px; }
+  .retainer-block { grid-template-columns: 1fr !important; gap: 28px !important; padding: 28px !important; }
+  .retainer-block > div:last-child > div { padding: 28px !important; }
+  .retainer-tier-head { flex-direction: column !important; align-items: flex-start !important; gap: 10px; }
+  .cta-section { grid-template-columns: 1fr; gap: 32px; padding: 72px 20px 40px; }
+  .cta-section h2 { font-size: clamp(34px, 10vw, 54px); }
+  .cta-right p { margin-bottom: 24px; }
+  .cta-form { padding: 18px; gap: 14px; }
+  .cta-form textarea { height: 120px; }
+  .cta-form button { width: 100%; justify-content: center; align-self: stretch !important; }
+  .blog-hero { padding: 128px 20px 56px; }
+  .blog-hero h1 { font-size: clamp(38px, 11vw, 58px); }
+  .blog-hero p { font-size: 15px; }
   .blog-grid { grid-template-columns: 1fr; }
-  .blog-filters { padding: 20px 24px; }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .blog-filters { padding: 16px 20px; top: 84px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .blog-filters::-webkit-scrollbar { display: none; }
+  .filter-btn { flex: 0 0 auto; }
+  .blog-card { padding: 32px 24px; }
+  .blog-card-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; text-align: center; }
+  .footer-top > div:first-child { margin-top: 0; }
+  .footer-logo { height: 44px; margin-left: auto; margin-right: auto; }
+  .footer-tagline { max-width: none; }
+  .footer-col { display: flex; flex-direction: column; align-items: center; }
+  .footer-col a { text-align: center; }
+  .footer-bottom { flex-direction: column; align-items: center; gap: 12px; padding-top: 24px; text-align: center; }
+  .footer-contact { text-align: center; }
   .models-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
-  .services-content { padding: 48px 24px; }
+  .services-content { padding: 48px 20px; }
+  .insights-signup { flex-direction: column; max-width: none !important; }
+  .insights-signup input,
+  .insights-signup .btn { width: 100%; }
   body { cursor: auto; }
   #cursor, #cursor-ring { display: none; }
-  .network-strip { padding: 20px 24px; }
+  .network-strip { padding: 18px 20px; }
+  #page-home .network-strip { min-height: var(--home-ticker-height); display: flex; align-items: center; }
+  .network-item { padding: 0 18px; font-size: 11px; }
+  #waFloat { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none !important; }
 }
 </style>
 </head>
@@ -444,6 +725,9 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
   <div class="nav-logo" onclick="showPage('home')">
     <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png"></div>
   <div class="nav-links" id="navLinks">
+    <div class="mobile-menu-brand" onclick="showPage('home')">
+      <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
+    </div>
     <span class="nav-link active" data-page="home" onclick="showPage('home')">Home</span>
     <span class="nav-link" data-page="legal" onclick="showPage('legal')">Legal</span>
     <span class="nav-link" data-page="capital" onclick="showPage('capital')">Capital</span>
@@ -464,14 +748,14 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="hero-eyebrow fade-in">The Founders Lab by Vriddhi Ventures</div>
-      <h1 class="hero-title fade-in" style="transition-delay:0.1s">
-        Where Founders<br><em>Build, Raise</em><br>and Exit.
+      <h1 class="hero-title fade-in" style="animation-delay:0.1s">
+        Where Founders<br><span class="hero-accent-build">Build</span>, <span class="hero-accent-raise">Raise</span><br>and <span class="hero-accent-exit">Exit</span>.
       </h1>
-      <p class="hero-subtitle fade-in" style="transition-delay:0.2s">
+      <p class="hero-subtitle fade-in" style="animation-delay:0.2s">
         A multidisciplinary advisory firm at the intersection of capital, law, and strategy — built for audacious founders and investors.
       </p>
-      <div class="hero-actions fade-in" style="transition-delay:0.3s">
-        <a class="btn-primary" href="#" onclick="showPage('contact');return false">Start a Conversation →</a>
+      <div class="hero-actions fade-in" style="animation-delay:0.3s">
+        <a class="btn-primary" href="#" onclick="scrollToContact();return false">Start a Conversation →</a>
         <a class="btn-ghost" href="#" onclick="document.getElementById('home-verticals').scrollIntoView({behavior:'smooth'});return false">Explore Services</a>
       </div>
     </div>
@@ -511,7 +795,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     </div>
   </div>
 
-  <div class="pillars-grid">
+  <div id="home-verticals" class="pillars-grid">
     <div class="pillar-card reveal" style="--pillar-color: var(--legal);" onclick="showPage('legal')">
       <div class="pillar-num">01</div>
       <div class="pillar-name">Legal</div>
@@ -590,7 +874,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     </div>
   </section>
 
-  <div class="testimonials-section">
+  <!-- <div class="testimonials-section">
     <div class="section-label">Client Testimonials</div>
     <h2 style="font-size:clamp(28px,3.5vw,48px);line-height:1.15;max-width:600px;">What founders say about <em style="color:var(--ink-muted);">working with us.</em></h2>
 
@@ -628,7 +912,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     <div style="margin-top:40px;padding:24px 32px;background:var(--gold-light);border-radius:8px;border-left:3px solid var(--gold);">
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;"><strong style="color:var(--ink);">To fill in testimonials:</strong> Replace the card content above with real quotes. Each card has a quote text, client name, role/company, and optionally a service badge. Remove this note and the dashed borders on the cards once filled. For real filled cards, remove the <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;">empty</code> class from the card div.</p>
     </div>
-  </div>
+  </div> -->
 
   <div id="contact-section">
     <div class="cta-section">
@@ -638,12 +922,13 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
       </div>
       <div class="cta-right">
         <p>Tell us what you're working on. We'll tell you how we can help — no obligation, no jargon, just a straight conversation.</p>
-        <div class="cta-form">
+        <form class="cta-form" action="https://formspree.io/f/xgawkqzq" method="POST">
+          <input type="hidden" name="source" value="Homepage Contact Form">
           <div class="form-row">
-            <input type="text" placeholder="Your name">
-            <input type="email" placeholder="Email address">
+            <input type="text" name="name" placeholder="Your name" autocomplete="name">
+            <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
           </div>
-          <select>
+          <select name="inquiry_type">
             <option value="" disabled selected>What are you looking for?</option>
             <option>Legal Advisory</option>
             <option>Fundraising / Capital</option>
@@ -652,17 +937,17 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
             <option>Zero-to-One Setup</option>
             <option>Not sure yet</option>
           </select>
-          <textarea placeholder="Tell us briefly about your situation..."></textarea>
-          <button class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
-        </div>
+          <textarea name="message" placeholder="Tell us briefly about your situation..." required></textarea>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message →</button>
+        </form>
       </div>
     </div>
   </div>
 
   <footer>
-    <div class="footer-top footer-bottom">
+    <div class="footer-top">
       <div>
-        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <img class="footer-logo" src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
         <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
       </div>
       <div class="footer-col">
@@ -706,6 +991,9 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
 <div id="page-legal" class="page">
 
   <div class="service-hero legal">
+    <div class="service-hero-art legal-hero-art">
+      <canvas id="legalCanvas" width="300" height="300"></canvas>
+    </div>
     <div class="service-hero-label">TFL Legal</div>
     <h1>Legal Advisory</h1>
     <p>Comprehensive legal support for founders, startups, and VC firms — built to scale and survive every stage of diligence.</p>
@@ -765,7 +1053,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     </div>
 
     <!-- Retainer pricing block -->
-    <div style="background:rgba(74,12,35,0.05);border-radius:16px;padding:56px;margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;" class="reveal">
+    <div style="background:rgba(74,12,35,0.05);border-radius:16px;padding:56px;margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;" class="reveal retainer-block">
       <div>
         <div class="section-label" style="color:var(--legal);">Legal Retainer</div>
         <h2 style="font-size:clamp(28px,3vw,44px);line-height:1.25;"><strong>Legal Counsel that knows<br><em style="color:var(--legal);">your business.</em></strong></h2>
@@ -793,7 +1081,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
         <div style="background:var(--white);border-radius:12px;padding:40px;border:1px solid var(--border);">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--border);">Retainer tiers</div>
           <div style="border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div class="retainer-tier-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
               <div style="font-family:var(--font-display);font-size:20px;">Starter</div>
               <span class="blog-card-tag tag-tier-blue" style="margin-bottom:0;">New Business</span>
             </div>
@@ -801,7 +1089,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
             <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#8a6d20;margin-top:8px;">AED 3,000 – 5,000 <span style="font-size:0.65em;">/ mo</span></div>
           </div>
           <div style="border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div class="retainer-tier-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
               <div style="font-family:var(--font-display);font-size:20px;">Growth</div>
               <span class="blog-card-tag tag-tier-green" style="margin-bottom:0;">Raise-ready</span>
             </div>
@@ -809,7 +1097,7 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
             <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#8a6d20;margin-top:8px;">AED 6,000 – 9,000 <span style="font-size:0.65em;">/ mo</span></div>
           </div>
           <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div class="retainer-tier-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
               <div style="font-family:var(--font-display);font-size:20px;">Scale</div>
               <span class="blog-card-tag tag-tier-red" style="margin-bottom:0;">Strategic counsel</span>
             </div>
@@ -832,23 +1120,24 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
       </div>
       <div class="cta-right">
         <p>A 60-minute focused session to identify gaps in your legal structure before they become expensive problems.</p>
-        <div class="cta-form">
+        <form class="cta-form" action="https://formspree.io/f/xgawkqzq" method="POST">
+          <input type="hidden" name="source" value="Legal Health Check Form">
           <div class="form-row">
-            <input type="text" placeholder="Your name">
-            <input type="email" placeholder="Email address">
+            <input type="text" name="name" placeholder="Your name" autocomplete="name">
+            <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
           </div>
-          <input type="text" placeholder="Company name &amp; stage">
-          <textarea placeholder="What's your most pressing legal challenge right now?"></textarea>
-          <button class="btn btn-dark btn-scoping" style="align-self:flex-start;">Book Health Check →</button>
-        </div>
+          <input type="text" name="company_stage" placeholder="Company name &amp; stage">
+          <textarea name="message" placeholder="What's your most pressing legal challenge right now?" required></textarea>
+          <button type="submit" class="btn btn-dark btn-scoping" style="align-self:flex-start;">Book Health Check →</button>
+        </form>
       </div>
     </div>
   </div>
 
   <footer>
-    <div class="footer-top footer-bottom">
+    <div class="footer-top">
       <div>
-        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <img class="footer-logo" src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
         <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
       </div>
       <div class="footer-col">
@@ -892,8 +1181,8 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
 <div id="page-capital" class="page">
 
   <div class="service-hero capital">
-    <div style="position:absolute;right:48px;top:50%;transform:translateY(-50%);">
-      <canvas id="capitalCanvas" width="300" height="300" style="width:300px;height:300px;"></canvas>
+    <div class="service-hero-art capital-hero-art">
+      <canvas id="capitalCanvas" width="300" height="300"></canvas>
     </div>
     <div class="service-hero-label">TFL Capital</div>
     <h1>Capital Advisory</h1>
@@ -961,12 +1250,13 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     </div>
     <div class="cta-right">
       <p>Whether you're preparing for your first round or your first exit, let's talk about what the right deal looks like for you.</p>
-      <div class="cta-form">
+      <form class="cta-form" action="https://formspree.io/f/xgawkqzq" method="POST">
+        <input type="hidden" name="source" value="Capital Advisory Form">
         <div class="form-row">
-          <input type="text" placeholder="Your name">
-          <input type="email" placeholder="Email address">
+          <input type="text" name="name" placeholder="Your name" autocomplete="name">
+          <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
         </div>
-        <select>
+        <select name="capital_need">
           <option value="" disabled selected>Type of capital need</option>
           <option>Seed / Pre-seed raise</option>
           <option>Series A / B raise</option>
@@ -974,16 +1264,16 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
           <option>Sell-side / Exit</option>
           <option>Minority investment</option>
         </select>
-        <textarea placeholder="Tell us about the opportunity..."></textarea>
-        <button class="btn btn-dark btn-capital-slide" style="align-self:flex-start;">Start the Conversation →</button>
-      </div>
+        <textarea name="message" placeholder="Tell us about the opportunity..." required></textarea>
+        <button type="submit" class="btn btn-dark btn-capital-slide" style="align-self:flex-start;">Start the Conversation →</button>
+      </form>
     </div>
   </div>
 
   <footer>
-    <div class="footer-top footer-bottom">
+    <div class="footer-top">
       <div>
-        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <img class="footer-logo" src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
         <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
       </div>
       <div class="footer-col">
@@ -1027,6 +1317,9 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
 <div id="page-strategy" class="page">
 
   <div class="service-hero strategy">
+    <div class="service-hero-art strategy-hero-art">
+      <canvas id="strategyCanvas" width="300" height="300"></canvas>
+    </div>
     <div class="service-hero-label">TFL Strategy</div>
     <h1>Strategy Advisory</h1>
     <p>Clarity before capital. Structure before scale. We translate complexity into actionable strategy — and keep you investor-ready at every turn.</p>
@@ -1092,12 +1385,13 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     </div>
     <div class="cta-right">
       <p>Whether you need a strategic sprint or an ongoing advisory partner, we work at the speed you need.</p>
-      <div class="cta-form">
+      <form class="cta-form" action="https://formspree.io/f/xgawkqzq" method="POST">
+        <input type="hidden" name="source" value="Strategy Advisory Form">
         <div class="form-row">
-          <input type="text" placeholder="Your name">
-          <input type="email" placeholder="Email address">
+          <input type="text" name="name" placeholder="Your name" autocomplete="name">
+          <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
         </div>
-        <select>
+        <select name="focus_area">
           <option value="" disabled selected>Area of focus</option>
           <option>Growth &amp; Market Strategy</option>
           <option>Investor Readiness</option>
@@ -1105,16 +1399,16 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
           <option>GRC Setup</option>
           <option>Full Advisory Retainer</option>
         </select>
-        <textarea placeholder="What challenge are you trying to solve?"></textarea>
-        <button class="btn btn-primary" style="align-self:flex-start;">Let's Talk →</button>
-      </div>
+        <textarea name="message" placeholder="What challenge are you trying to solve?" required></textarea>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Let's Talk →</button>
+      </form>
     </div>
   </div>
 
   <footer>
-    <div class="footer-top footer-bottom">
+    <div class="footer-top">
       <div>
-        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <img class="footer-logo" src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
         <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
       </div>
       <div class="footer-col">
@@ -1258,16 +1552,16 @@ footer { background: var(--ink); padding: 64px 48px 40px; }
     <div class="section-label" style="justify-content:center;">Stay Informed</div>
     <h2 style="font-size:clamp(28px,4vw,52px);margin-bottom:16px;">Get TFL Insights delivered.</h2>
     <p style="color:var(--ink-soft);font-size:15px;max-width:480px;margin:0 auto 40px;line-height:1.7;">Monthly legal, capital, and strategy perspectives for founders building in the GCC and beyond.</p>
-    <div style="display:flex;gap:12px;justify-content:center;max-width:420px;margin:0 auto;flex-wrap:wrap;">
+    <div class="insights-signup" style="display:flex;gap:12px;justify-content:center;max-width:420px;margin:0 auto;flex-wrap:wrap;">
       <input type="email" placeholder="Your email address" style="flex:1;min-width:200px;padding:14px 20px;border:1px solid var(--border);border-radius:40px;font-family:var(--font-body);font-size:14px;background:var(--white);outline:none;">
       <button class="btn btn-dark">Subscribe</button>
     </div>
   </section>
 
   <footer>
-    <div class="footer-top footer-bottom">
+    <div class="footer-top">
       <div>
-        <img src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab" style="height:52px;width:auto;display:block;margin-bottom:12px;filter:brightness(0) invert(1);opacity:0.9;">
+        <img class="footer-logo" src="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png" alt="The Founders Lab">
         <div class="footer-tagline"><span style="color:var(--gold);">Legal</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Capital</span> <span style="color:var(--gold);">·</span> <span style="color:var(--gold);">Strategy</span><br>Empowering visionary entrepreneurs.</div>
       </div>
       <div class="footer-col">
@@ -1349,6 +1643,32 @@ function bindHover() {
 }
 bindHover();
 
+function updateNavState() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  nav.classList.toggle('nav-transparent', window.scrollY < 16);
+}
+
+function updateNavGlassBounds() {
+  const nav = document.querySelector('nav');
+  const logo = nav?.querySelector('.nav-logo');
+  const links = document.getElementById('navLinks');
+  if (!nav || !logo || !links) return;
+
+  if (window.innerWidth <= 900 || getComputedStyle(links).display === 'none') {
+    nav.style.removeProperty('--nav-glass-left');
+    nav.style.removeProperty('--nav-glass-right');
+    return;
+  }
+
+  const navRect = nav.getBoundingClientRect();
+  const logoRect = logo.getBoundingClientRect();
+  const linksRect = links.getBoundingClientRect();
+
+  nav.style.setProperty('--nav-glass-left', `${Math.max(0, logoRect.left - navRect.left)}px`);
+  nav.style.setProperty('--nav-glass-right', `${Math.max(0, navRect.right - linksRect.right - 12)}px`);
+}
+
 // ── Page routing ──
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1360,10 +1680,13 @@ function showPage(id) {
   if (document.getElementById('navLinks').classList.contains('open')) toggleMenu();
   setTimeout(initReveal, 80);
   bindHover();
+  requestAnimationFrame(updateNavState);
+  requestAnimationFrame(updateNavGlassBounds);
 }
 
 // ── Contact scroll helpers ──
 function scrollToContact() {
+  if (document.getElementById('navLinks').classList.contains('open')) toggleMenu();
   if (!document.getElementById('page-home').classList.contains('active')) {
     showPage('home');
     setTimeout(() => document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }), 450);
@@ -1372,13 +1695,93 @@ function scrollToContact() {
   }
 }
 function scrollToContactLegal() {
+  if (document.getElementById('navLinks').classList.contains('open')) toggleMenu();
   document.getElementById('contact-section-legal').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setSubmitButtonState(button, state, label) {
+  if (!button.dataset.defaultLabel) button.dataset.defaultLabel = button.innerHTML;
+  if (!button.dataset.minWidth) button.dataset.minWidth = `${button.offsetWidth}px`;
+
+  button.classList.remove('is-loading', 'is-success', 'is-error');
+  button.style.minWidth = button.dataset.minWidth;
+
+  if (state === 'default') {
+    button.innerHTML = button.dataset.defaultLabel;
+    button.disabled = false;
+    button.style.removeProperty('min-width');
+    delete button.dataset.minWidth;
+    return;
+  }
+
+  if (state === 'loading') {
+    button.classList.add('is-loading');
+    button.innerHTML = `<span class="btn-state-icon btn-spinner"></span><span>${label || 'Sending...'}</span>`;
+  }
+
+  if (state === 'success') {
+    button.classList.add('is-success');
+    button.innerHTML = `<span class="btn-state-icon btn-checkmark"></span><span>${label || 'Sent'}</span>`;
+  }
+
+  if (state === 'error') {
+    button.classList.add('is-error');
+    button.innerHTML = `<span>${label || 'Try Again'}</span>`;
+  }
+
+  button.disabled = true;
+}
+
+function initAjaxForms() {
+  document.querySelectorAll('form.cta-form[action*="formspree.io/f/"]').forEach(form => {
+    if (form.dataset.ajaxBound === 'true') return;
+    form.dataset.ajaxBound = 'true';
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (!submitButton) return;
+      if (!form.reportValidity()) return;
+
+      setSubmitButtonState(submitButton, 'loading', 'Sending...');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) throw new Error('Form submission failed');
+
+        form.reset();
+        setSubmitButtonState(submitButton, 'success', 'Sent');
+        setTimeout(() => setSubmitButtonState(submitButton, 'default'), 2200);
+      } catch (error) {
+        setSubmitButtonState(submitButton, 'error', 'Try Again');
+        setTimeout(() => setSubmitButtonState(submitButton, 'default'), 2400);
+      }
+    });
+  });
 }
 
 // ── Mobile menu ──
 function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('open');
+  const navLinks = document.getElementById('navLinks');
+  const menuToggle = document.getElementById('menuToggle');
+  const nav = document.querySelector('nav');
+  const isOpen = navLinks.classList.toggle('open');
+  menuToggle.classList.toggle('open', isOpen);
+  nav.classList.toggle('menu-open', isOpen);
+  document.body.classList.toggle('menu-open', isOpen);
 }
+
+window.addEventListener('scroll', updateNavState, { passive: true });
+window.addEventListener('resize', updateNavGlassBounds, { passive: true });
+updateNavState();
+updateNavGlassBounds();
+window.addEventListener('load', updateNavGlassBounds);
+initAjaxForms();
 
 // ── Blog filter ──
 function filterBlog(tag, btn) {
@@ -1449,9 +1852,9 @@ initStatsCounter();
   check();
 })();
 
-// ── Capital money symbols animation ──
-(function initCapitalAnimation() {
-  const canvas = document.getElementById('capitalCanvas');
+// ── Service hero glyph animations ──
+function initServiceGlyphAnimation(canvasId, options) {
+  const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -1460,11 +1863,15 @@ initStatsCounter();
   canvas.height = H * DPR;
   ctx.scale(DPR, DPR);
 
-  const SYMBOLS = ['$', '€', '£', '¥', '₿', '%', '◈', '∑', '♦', '₹'];
+  const SYMBOLS = options.symbols;
+  const baseColor = options.color || '#ffffff';
+  const linkColor = options.linkColor || 'rgba(255,255,255,0.18)';
+  const hoverGlow = options.hoverGlow || 'rgba(255,255,255,0.6)';
+  const count = options.count || 10;
   let isHovered = false;
   let lastT = 0;
 
-  class MoneySymbol {
+  class GlyphParticle {
     constructor(index, total) {
       this.symbol = SYMBOLS[index % SYMBOLS.length];
       this.x = 30 + Math.random() * (W - 60);
@@ -1499,7 +1906,6 @@ initStatsCounter();
       const opacity = this.getOpacity(this.t);
       if (opacity <= 0.01) return;
 
-      // Pulse: faster + bigger on hover
       const pulseSpeed = isHovered ? 4 : 1.6;
       const pulseAmp = isHovered ? 0.18 : 0.06;
       const scale = 1 + pulseAmp * Math.sin(this.t * pulseSpeed + this.phase);
@@ -1509,14 +1915,13 @@ initStatsCounter();
       ctx.translate(this.x, this.y);
       ctx.globalAlpha = opacity * (isHovered ? 1 : 0.82);
 
-      // Glow on hover
       if (isHovered) {
-        ctx.shadowColor = 'rgba(255,255,255,0.6)';
+        ctx.shadowColor = hoverGlow;
         ctx.shadowBlur = 12;
       }
 
       ctx.font = `300 ${size}px 'Cormorant Garamond', Georgia, serif`;
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = baseColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(this.symbol, 0, 0);
@@ -1524,8 +1929,7 @@ initStatsCounter();
     }
   }
 
-  const COUNT = 10;
-  const particles = Array.from({ length: COUNT }, (_, i) => new MoneySymbol(i, COUNT));
+  const particles = Array.from({ length: count }, (_, i) => new GlyphParticle(i, count));
 
   function animate(timestamp) {
     const dt = Math.min((timestamp - lastT) / 1000, 0.05);
@@ -1533,7 +1937,6 @@ initStatsCounter();
 
     ctx.clearRect(0, 0, W, H);
 
-    // Subtle connecting threads between nearby symbols
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
@@ -1543,7 +1946,11 @@ initStatsCounter();
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(255,255,255,${a})`;
+          if (linkColor.startsWith('rgba(')) {
+            ctx.strokeStyle = linkColor.replace(/,\s*[^,\)]+\)$/, `,${a})`);
+          } else {
+            ctx.strokeStyle = `rgba(255,255,255,${a})`;
+          }
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -1558,7 +1965,31 @@ initStatsCounter();
 
   canvas.addEventListener('mouseenter', () => isHovered = true);
   canvas.addEventListener('mouseleave', () => isHovered = false);
-})();
+}
+
+initServiceGlyphAnimation('capitalCanvas', {
+  symbols: ['$', '€', '£', '¥', '₿', '%', '◈', '∑', '♦', '₹'],
+  color: '#ffffff',
+  linkColor: 'rgba(255,255,255,0.18)',
+  hoverGlow: 'rgba(255,255,255,0.6)',
+  count: 10,
+});
+
+initServiceGlyphAnimation('legalCanvas', {
+  symbols: ['§', '¶', '◧', '◨', '◇', '□', '+', '∥', '◫', '—'],
+  color: 'rgba(255,255,255,0.95)',
+  linkColor: 'rgba(255,255,255,0.16)',
+  hoverGlow: 'rgba(255,255,255,0.5)',
+  count: 9,
+});
+
+initServiceGlyphAnimation('strategyCanvas', {
+  symbols: ['↗', '→', '△', '◇', '◎', '⊕', '◈', '+', '⌁', '∿'],
+  color: 'rgba(255,255,255,0.95)',
+  linkColor: 'rgba(255,255,255,0.16)',
+  hoverGlow: 'rgba(201,168,76,0.45)',
+  count: 9,
+});
 
 // ── Network canvas animation ──
 (function initNetwork() {
