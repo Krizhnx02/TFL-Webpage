@@ -4,8 +4,106 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Founders Lab — Capital. Legal. Strategy.</title>
+
+<!-- Primary SEO Meta Tags -->
+<meta name="description" content="The Founders Lab provides premier Capital Advisory, Legal Counsel, and Strategic Growth execution for ambitious founders and high-growth ventures across the Middle East & globally.">
+<meta name="keywords" content="The Founders Lab, TFL, Capital Advisory, Legal Counsel, Venture Strategy, Startup Fundraising, Dubai legal counsel, VC legal strategy">
+<meta name="author" content="The Founders Lab">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://thefounderslab.me/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thefounderslab.me/">
+<meta property="og:title" content="The Founders Lab — Capital. Legal. Strategy.">
+<meta property="og:description" content="Premier Capital Advisory, Legal Counsel, and Strategic Growth execution for ambitious founders.">
+<meta property="og:image" content="https://thefounderslab.me/WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png">
+<meta property="og:site_name" content="The Founders Lab">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://thefounderslab.me/">
+<meta name="twitter:title" content="The Founders Lab — Capital. Legal. Strategy.">
+<meta name="twitter:description" content="Premier Capital Advisory, Legal Counsel, and Strategic Growth execution for ambitious founders.">
+<meta name="twitter:image" content="https://thefounderslab.me/WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png">
+
+<!-- Favicon -->
 <link rel="icon" type="image/png" href="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png">
 <link rel="apple-touch-icon" href="WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png">
+
+<!-- Schema.org JSON-LD Structured Data for Google Sitelinks & Search Engines -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://thefounderslab.me/#organization",
+      "name": "The Founders Lab",
+      "alternateName": ["TFL", "Founders Lab"],
+      "url": "https://thefounderslab.me/",
+      "logo": "https://thefounderslab.me/WhatsApp_Image_2026-05-22_at_4.14.29_PM-removebg-preview.png",
+      "description": "Capital Advisory, Legal Counsel, and Strategic Execution for high-growth founders.",
+      "sameAs": [
+        "https://www.linkedin.com/company/tfl-me/posts/?feedView=all"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+971563439335",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Arabic"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://thefounderslab.me/#website",
+      "url": "https://thefounderslab.me/",
+      "name": "The Founders Lab",
+      "publisher": {
+        "@id": "https://thefounderslab.me/#organization"
+      }
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": "https://thefounderslab.me/#navigation",
+      "name": "Main Sitelinks Navigation",
+      "hasPart": [
+        {
+          "@type": "WebPage",
+          "name": "Legal Counsel",
+          "description": "Full-spectrum legal architecture, fund structuring, venture legal counsel, and cross-border compliance.",
+          "url": "https://thefounderslab.me/#legal"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Capital Advisory",
+          "description": "Capital raising, institutional co-investment, debt structuring, and secondary liquidity solutions.",
+          "url": "https://thefounderslab.me/#capital"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Strategy Consulting",
+          "description": "Market expansion, corporate restructuring, venture building, and strategic M&A execution.",
+          "url": "https://thefounderslab.me/#strategy"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Insights & Blog",
+          "description": "Expert analysis on legal frameworks, capital markets, venture dynamics, and founder strategy.",
+          "url": "https://thefounderslab.me/#blog"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Contact & Consultation",
+          "description": "Get in touch with The Founders Lab team for strategic counsel.",
+          "url": "https://thefounderslab.me/#contact-section"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <!-- Vercel Analytics -->
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -1676,13 +1774,22 @@ function updateNavGlassBounds() {
   nav.style.setProperty('--nav-glass-right', `${Math.max(0, navRect.right - linksRect.right - 12)}px`);
 }
 
-// ── Page routing ──
-function showPage(id) {
+// ── Page routing & Deep Linking for SEO ──
+function showPage(id, skipHashUpdate) {
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+  target.classList.add('active');
   document.querySelectorAll('.nav-link[data-page]').forEach(l => {
     l.classList.toggle('active', l.dataset.page === id);
   });
+  if (!skipHashUpdate && history.pushState) {
+    if (id === 'home') {
+      history.pushState(null, null, window.location.pathname);
+    } else {
+      history.pushState(null, null, '#' + id);
+    }
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (document.getElementById('navLinks').classList.contains('open')) toggleMenu();
   setTimeout(initReveal, 80);
@@ -1690,6 +1797,16 @@ function showPage(id) {
   requestAnimationFrame(updateNavState);
   requestAnimationFrame(updateNavGlassBounds);
 }
+
+function handleHashRoute() {
+  const rawHash = window.location.hash.replace('#', '').toLowerCase();
+  const validPages = ['legal', 'capital', 'strategy', 'blog'];
+  if (validPages.includes(rawHash)) {
+    showPage(rawHash, true);
+  }
+}
+window.addEventListener('DOMContentLoaded', handleHashRoute);
+window.addEventListener('hashchange', handleHashRoute);
 
 // ── Contact scroll helpers ──
 function scrollToContact() {

@@ -1,0 +1,33 @@
+# www.robotstxt.org/
+# Allows all search engine crawlers and AI search bots to index The Founders Lab
+
+User-agent: *
+Allow: /
+
+# Explicitly Allow AI Search Engines & Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://thefounderslab.me/sitemap.xml
